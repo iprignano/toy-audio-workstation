@@ -109,7 +109,7 @@ const playHihats = (time: number) => {
 };
 
 // synth
-let notesPlaying: Record<number, OscillatorNode> = {};
+let notesPlaying: Record<number, {osc: OscillatorNode, gain: GainNode}> = {};
 
 const playNote = (frequency: number) => {
   if (notesPlaying[frequency]) return
@@ -117,20 +117,23 @@ const playNote = (frequency: number) => {
   const audioCtx = getAudioContext();
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  gain.gain.value = 1;
+  gain.gain.value = 0.2;
   osc.connect(gain);
   gain.connect(audioCtx.destination);
 
   osc.frequency.value = frequency;
   osc.start();
 
-  notesPlaying[frequency] = osc;
+  notesPlaying[frequency] = {osc, gain};
 }
 
 const releaseNote = (frequency: number) => {
-  if (!notesPlaying[frequency]) return
+  const note = notesPlaying[frequency];
+  if (!note) return
 
-  notesPlaying[frequency]?.stop();
+  const audioCtx = getAudioContext();
+  note.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.50);
+
   delete notesPlaying[frequency];
 }
 

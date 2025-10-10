@@ -109,6 +109,8 @@ export default function Keyboard() {
             onMouseDown={(evt) => {
               // don't do anything if it's not a left-click
               if (evt.button !== 0) return;
+              evt.preventDefault();
+
               setIsPressedDown(true);
               playNote(freq);
             }}
