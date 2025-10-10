@@ -1,15 +1,11 @@
 .wrapper {
-
+  height: 100%;
+  display: grid;
+  align-content: stretch;
+  grid-template-rows: min-content auto min-content;
 }
 
-.footer {
-  display: flex;
-  justify-content: space-between;
-  position: fixed;
-  padding: 20px;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgb(51, 51, 51);
-  color: white;
+.body {
+  overflow-x: scroll;
+  place-content: center;
 }

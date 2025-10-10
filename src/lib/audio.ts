@@ -1,6 +1,13 @@
-const audioCtx = new AudioContext();
+let audioContext: AudioContext;
+
+const getAudioContext = () => {
+  if (typeof audioContext !== 'undefined') return audioContext;
+  audioContext = new AudioContext();
+  return audioContext;
+}
 
 const getNoiseAudioNode = () => {
+  const audioCtx = getAudioContext();
   const bufferSize = audioCtx.sampleRate;
 
   // create an empty buffer
@@ -21,6 +28,7 @@ const getNoiseAudioNode = () => {
 }
 
 const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) => {
+  const audioCtx = getAudioContext();
   return new BiquadFilterNode(audioCtx, {
     type,
     frequency,
@@ -30,6 +38,7 @@ const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) =>
 
 // Kick - low freq sine wave
 const playKick = (time: number) => {
+  const audioCtx = getAudioContext();
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
@@ -49,6 +58,7 @@ const playKick = (time: number) => {
 
 // Snare - high freq sine wave + short high-passed noise
 const playSnare = (time: number) => {
+  const audioCtx = getAudioContext();
   const osc = audioCtx.createOscillator();
 
   const oscGain = audioCtx.createGain();
@@ -83,6 +93,7 @@ const playSnare = (time: number) => {
 
 // Hihats - high-passed short noise
 const playHihats = (time: number) => {
+  const audioCtx = getAudioContext();
   const noise = getNoiseAudioNode()
 
   const highPass = getFilterNode('highpass', 6000)
@@ -97,6 +108,32 @@ const playHihats = (time: number) => {
   noise.stop(time + 0.2);
 };
 
+// synth
+let notesPlaying: Record<number, OscillatorNode> = {};
+
+const playNote = (frequency: number) => {
+  if (notesPlaying[frequency]) return
+
+  const audioCtx = getAudioContext();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  gain.gain.value = 1;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.frequency.value = frequency;
+  osc.start();
+
+  notesPlaying[frequency] = osc;
+}
+
+const releaseNote = (frequency: number) => {
+  if (!notesPlaying[frequency]) return
+
+  notesPlaying[frequency]?.stop();
+  delete notesPlaying[frequency];
+}
+
 export {
-  audioCtx, playHihats, playKick, playSnare
+  getAudioContext, playHihats, playKick, playSnare, playNote, releaseNote
 };

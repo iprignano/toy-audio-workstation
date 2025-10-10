@@ -1,0 +1,30 @@
+.wrapper {
+  width: 100%;
+  color: white;
+  display: flex;
+  gap: 2px;
+  position: relative;
+  justify-content: center;
+}
+
+.key {
+  appearance: none;
+  background-color: white;
+  border: none;
+  width: 50px;
+  height: 150px;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.black {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: black;
+  color: white;
+  width: 36px;
+  height: 90px;
+  z-index: 1;
+  margin: 0 -19px 0;
+}

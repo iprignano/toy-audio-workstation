@@ -1,31 +1,24 @@
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-optical-sizing: auto;
   background-color: rgb(40, 40, 40);
 }
 
-.space-grotesk {
+.grotesk {
   font-family: "Space Grotesk", sans-serif;
   font-style: normal;
 }
 
-header {
-  display: flex;
-  width: 100%;
-  background-color: rgb(23, 23, 23);
-  color: white;
+.monospace {
+  font-family: "Geist Mono", monospace;
+  font-style: normal;
 }
 
-.logo {
-  font-size: 13px;
-  padding: 10px 20px;
-  font-weight: 400;
-  font-variation-settings: "wght" 300;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.logo:hover {
-  font-variation-settings: "wght" 700;
-  letter-spacing: 0.5px;
+.app-wrapper {
+  height: 100%;
 }

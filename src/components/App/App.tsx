@@ -1,5 +1,10 @@
 import { createSignal } from 'solid-js';
 
+import Header from '../Header/Header';
+import DrumsSequencer from '../DrumsSequencer/DrumsSequencer';
+import Keyboard from '../Keyboard/Keyboard';
+import Footer from '../Footer/Footer';
+
 import styles from './styles.module.css';
 
 export default function App() {
@@ -7,10 +12,14 @@ export default function App() {
 
   return (
     <div class={styles.wrapper}>
-      <footer class={styles.footer}>
-        <div>bpm</div>
-        <div>play/pause</div>
-      </footer>
+      <Header />
+
+      <div class={styles.body}>
+        <DrumsSequencer />
+        <Keyboard />
+      </div>
+
+      <Footer />
     </div>
   );
 }
