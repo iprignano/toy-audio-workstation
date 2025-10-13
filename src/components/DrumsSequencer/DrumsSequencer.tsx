@@ -8,39 +8,27 @@ const INSTRUMENTS = ['kick', 'snare', 'hihats'];
 
 export default function DrumsSequencer() {
   return (
-    <div class={styles.wrapper}>
-      <table class="monospace">
-        <thead id="steps">
-          <tr>
-            <th></th>
-            {STEPS_ARRAY.map((step) => (
-              <th scope="col" data-step={step} class="monospace">
-                {step}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {INSTRUMENTS.map((instrument) => (
-            <tr id={instrument}>
-              <td scope="row" class="monospace">
-                {instrument}
-              </td>
-              {STEPS_ARRAY.map((step) => {
-                const attributes = {
-                  [`data-${instrument}-step`]: step,
-                  type: 'checkbox' as const,
-                };
-                return (
-                  <td>
-                    <input {...attributes} />
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div class={`${styles.wrapper} monospace`}>
+      <div />
+      {STEPS_ARRAY.map((step) => (
+        <div>{step}</div>
+      ))}
+      {INSTRUMENTS.map((instrument) => (
+        <>
+          <div>{instrument}</div>
+          {STEPS_ARRAY.map((step) => {
+            const attributes = {
+              [`data-${instrument}-step`]: step,
+              type: 'checkbox' as const,
+            };
+            return (
+              <div>
+                <input {...attributes} />
+              </div>
+            );
+          })}
+        </>
+      ))}
     </div>
   );
 }
