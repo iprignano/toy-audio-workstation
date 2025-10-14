@@ -1,10 +1,27 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 20px;
   width: 100%;
   height: min-content;
   background-color: rgb(51, 51, 51);
   color: white;
   align-self: end;
+}
+
+.playToggle {
+  padding: 15px 20px;
+  text-transform: uppercase;
+  background-color: rgb(101, 101, 101);
+  border-radius: 5px;
+  min-width: 160px;
+  text-align: center;
+  cursor: pointer;
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+
+.playToggle:hover {
+  background-color: rgb(138, 138, 138);
 }
