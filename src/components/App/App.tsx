@@ -11,13 +11,12 @@ import type { OnStepToggle } from '../DrumsSequencer/DrumsSequencer';
 
 import styles from './styles.module.css';
 
-const initialDrumsStore = {
-  kick: fill(Array(16), false),
-  snare: fill(Array(16), false),
-  hihats: fill(Array(16), false),
-};
-
 export default function App() {
+  const initialDrumsStore = {
+    kick: fill(Array(16), false),
+    snare: fill(Array(16), false),
+    hihats: fill(Array(16), false),
+  };
   const [step, setStep] = createSignal(0);
   const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
   const [isPlaying, setIsPlaying] = createSignal(false);
