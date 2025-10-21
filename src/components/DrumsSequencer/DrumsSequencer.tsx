@@ -1,5 +1,3 @@
-import { createSignal } from 'solid-js';
-
 import styles from './styles.module.css';
 import type { Store } from 'solid-js/store';
 
