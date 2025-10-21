@@ -37,3 +37,7 @@
   z-index: 1;
   margin: 0 -19px 0;
 }
+
+.highlighted {
+  opacity: 0.6;
+}

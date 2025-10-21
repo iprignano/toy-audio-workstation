@@ -1,7 +1,8 @@
-import { createEffect, createSignal, onMount } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
 
 import styles from './styles.module.css';
-import { playNote, releaseNote } from '../../lib/audio';
+import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../../lib/audio';
+import { difference, union } from 'es-toolkit';
 
 const initialNotes = [
   { note: '1C', freq: 130.8 },
@@ -53,6 +54,7 @@ const keyMap: Record<string, string> = {
 export default function Keyboard() {
   const [isPressedDown, setIsPressedDown] = createSignal(false);
   const [currentOctave, setCurrentOctave] = createSignal(2);
+  const [notesPlaying, setNotesPlaying] = createSignal<number[]>([]);
   const [notes, setNotes] = createSignal(initialNotes);
 
   const lowerOctave = () => {
@@ -64,6 +66,20 @@ export default function Keyboard() {
     if (currentOctave() === 4) return;
     setCurrentOctave(currentOctave() + 1);
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq * 2 })));
+  };
+  const playNote = (note: number) => {
+    playAudioNote(note);
+    setNotesPlaying(() => {
+      const notes = union(notesPlaying(), [note]);
+      return notes;
+    });
+  };
+  const releaseNote = (note: number) => {
+    releaseAudioNote(note);
+    setNotesPlaying(() => {
+      const notes = difference(notesPlaying(), [note]);
+      return notes;
+    });
   };
 
   const keypressHandler = (evt: KeyboardEvent) => {
@@ -106,7 +122,11 @@ export default function Keyboard() {
         {notes().map(({ note, freq }) => {
           return (
             <button
-              classList={{ [styles.black]: note.includes('#'), [styles.key]: true }}
+              classList={{
+                [styles.black]: note.includes('#'),
+                [styles.key]: true,
+                [styles.highlighted]: Boolean(notesPlaying().find((f) => f === freq)),
+              }}
               onMouseDown={(evt) => {
                 // don't do anything if it's not a left-click
                 if (evt.button !== 0) return;
