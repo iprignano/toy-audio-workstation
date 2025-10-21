@@ -1,7 +1,15 @@
+import { Dynamic } from 'solid-js/web';
+import { Play } from '../Icon/Play';
+import { Pause } from '../Icon/Pause';
 import styles from './styles.module.css';
 
 const minBpm = 60;
 const maxBpm = 240;
+
+const options = {
+  play: Play,
+  pause: Pause,
+};
 
 export default function Footer(props: {
   bpm: number;
@@ -55,6 +63,7 @@ export default function Footer(props: {
       </div>
       <button class={`${styles.playToggle} monospace`} onClick={props.onPlayStateChange}>
         {props.isPlaying ? 'Pause' : 'Play'}
+        <Dynamic component={options[props.isPlaying ? 'pause' : 'play']} fill="white" />
       </button>
     </footer>
   );
