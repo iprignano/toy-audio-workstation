@@ -32,7 +32,7 @@ const initialNotes = [
 ];
 
 // Using Ableton's keyboard mapping
-// 'cause that's what I'm used to
+// because that's what I'm used to
 const keyMap: Record<string, string> = {
   a: '1C',
   w: '1C#',
@@ -51,9 +51,17 @@ const keyMap: Record<string, string> = {
   l: '2D',
 };
 
+const oscTypes: { wave: OscillatorType; label: string }[] = [
+  { label: 'sin', wave: 'sine' },
+  { label: 'tri', wave: 'triangle' },
+  { label: 'sqr', wave: 'square' },
+  { label: 'saw', wave: 'sawtooth' },
+];
+
 export default function Keyboard() {
   const [isPressedDown, setIsPressedDown] = createSignal(false);
   const [currentOctave, setCurrentOctave] = createSignal(2);
+  const [oscWaveIndex, setOscWaveIndex] = createSignal(0);
   const [notesPlaying, setNotesPlaying] = createSignal<number[]>([]);
   const [notes, setNotes] = createSignal(initialNotes);
 
@@ -68,7 +76,7 @@ export default function Keyboard() {
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq * 2 })));
   };
   const playNote = (note: number) => {
-    playAudioNote(note);
+    playAudioNote(note, oscTypes[oscWaveIndex()].wave);
     setNotesPlaying(() => {
       const notes = union(notesPlaying(), [note]);
       return notes;
@@ -85,10 +93,14 @@ export default function Keyboard() {
   const keypressHandler = (evt: KeyboardEvent) => {
     const noteKey = keyMap[evt.key];
 
+    if (evt.metaKey) return;
+
     if (evt.type === 'keydown' && evt.key === 'z') {
+      evt.preventDefault();
       lowerOctave();
       return;
     } else if (evt.type === 'keydown' && evt.key === 'x') {
+      evt.preventDefault();
       increaseOctave();
       return;
     }
@@ -96,6 +108,7 @@ export default function Keyboard() {
     const note = notes().find(({ note }) => note === noteKey)?.freq;
     if (!note) return;
 
+    evt.preventDefault();
     if (evt.type === 'keydown') {
       playNote(note);
     } else {
@@ -118,6 +131,28 @@ export default function Keyboard() {
 
   return (
     <div class={styles.wrapper}>
+      <div class={`${styles.ctrls} monospace`}>
+        <div>
+          <span>wave</span>
+          <input
+            type="range"
+            id="waves"
+            name="waves"
+            min="0"
+            max="3"
+            step="1"
+            value={oscWaveIndex()}
+            list="wavesList"
+            onChange={(evt) => setOscWaveIndex(Number(evt.target.value))}
+          />
+
+          <datalist id="wavesList">
+            {oscTypes.map(({ label }, index) => {
+              return <option value={index} label={label}></option>;
+            })}
+          </datalist>
+        </div>
+      </div>
       <div class={styles.keys}>
         {notes().map(({ note, freq }) => {
           return (

@@ -143,7 +143,7 @@ const playHihats = (time: number) => {
 // ================
 let notesPlaying: Record<number, { osc: OscillatorNode; gain: GainNode }> = {};
 
-const playNote = (frequency: number) => {
+const playNote = (frequency: number, wave?: OscillatorType) => {
   if (notesPlaying[frequency]) return;
 
   const audioCtx = getAudioContext();
@@ -151,6 +151,7 @@ const playNote = (frequency: number) => {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   gain.gain.value = 0.2;
+  osc.type = wave || 'sine';
   osc.connect(gain);
   gain.connect(destination);
 
