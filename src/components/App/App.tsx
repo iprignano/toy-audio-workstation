@@ -10,7 +10,7 @@ import styles from './styles.module.css';
 export default function App() {
   const [bpm, setBpm] = createSignal(120);
   const [isPlaying, setIsPlaying] = createSignal(false);
-  const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
+  const [isSequencingKeys, setIsSequencingKeys] = createSignal(true);
 
   return (
     <div class={styles.wrapper}>
