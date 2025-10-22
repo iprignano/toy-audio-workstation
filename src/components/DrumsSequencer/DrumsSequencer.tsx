@@ -49,7 +49,7 @@ export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean 
 
       setCurrentStep((step) => step + 1);
     }, 60_000 / props.bpm / 4);
-    // 1 minute is 60_000
+    // 1 minute is 60_000ms
     // 60_000 / 4 gives us the interval between quarter notes
     // we divide by 4 because we want 16th notes
 
