@@ -1,6 +1,6 @@
-import { createEffect, createSignal } from 'solid-js';
+import { createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore } from 'solid-js/store';
-import { fill } from 'es-toolkit';
+import { getAudioContext, playNote } from '../../lib/audio';
 
 import styles from './styles.module.css';
 
@@ -37,7 +37,9 @@ const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
 type Store = Record<number, { freq?: number; length?: number }[]>;
 
-export default function SynthSequencer() {
+export default function SynthSequencer(props: { isPlaying: boolean; bpm: number }) {
+  const [currentStep, setCurrentStep] = createSignal(0);
+  const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
   const [notesStore, setNotesStore] = createStore<Store>(
     STEPS_ARRAY.reduce((acc, val) => {
       acc[val] = [];
@@ -53,6 +55,42 @@ export default function SynthSequencer() {
     }
   };
 
+  createEffect(() => {
+    if (!props.isPlaying) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      if (currentStep() === 1) {
+        console.log('synth', performance.now());
+      }
+      if (currentStep() >= STEPS_LENGHT) {
+        setCurrentStep(0);
+      }
+
+      const time = getAudioContext().currentTime;
+      if (notesStore[currentStep()]?.length) {
+        notesStore[currentStep()].forEach((note) => {
+          if (note.freq) {
+            playNote(note.freq, 'sine', 0.1);
+          }
+        });
+      }
+
+      setCurrentStep((step) => step + 1);
+    }, 60_000 / props.bpm / 8);
+    // 1 minute is 60_000ms
+    // 60_000 / 8 gives us the interval between 32th notes
+
+    setIntervalId(interval);
+
+    // Clean up any running timer when the BPM
+    // changes or the playback is stopped
+    onCleanup(() => {
+      clearInterval(intervalId());
+    });
+  });
+
   return (
     <div class={styles.wrapper}>
       <table class={styles.noteTable}>
@@ -66,7 +104,7 @@ export default function SynthSequencer() {
               {STEPS_ARRAY.map((step) => (
                 <td onClick={() => toggleNote({ step, freq })}>
                   {notesStore[step].find((n) => n?.freq === freq) && (
-                    <span>
+                    <span class={step === currentStep() ? `${styles.highlight}` : ''}>
                       {note}
                       {octave}
                     </span>

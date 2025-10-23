@@ -5,12 +5,12 @@ import SynthSequencer from '../SynthSequencer/SynthSequencer';
 
 import styles from './styles.module.css';
 
-export default function Synth(props: { isSequencing: boolean }) {
+export default function Synth(props: { isSequencing: boolean; isPlaying: boolean; bpm: number }) {
   return (
     <div class={styles.wrapper}>
       <Switch>
         <Match when={props.isSequencing}>
-          <SynthSequencer />
+          <SynthSequencer isPlaying={props.isPlaying} bpm={props.bpm} />
         </Match>
         <Match when={!props.isSequencing}>
           <Keyboard />

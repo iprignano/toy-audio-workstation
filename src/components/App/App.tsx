@@ -27,7 +27,7 @@ export default function App() {
           <div class={styles.title}>
             <span class="monospace">keyboard</span>
           </div>
-          <Synth isSequencing={isSequencingKeys()} />
+          <Synth isSequencing={isSequencingKeys()} isPlaying={isPlaying()} bpm={bpm()} />
         </div>
       </div>
 

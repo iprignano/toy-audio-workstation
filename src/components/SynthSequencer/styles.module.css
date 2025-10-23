@@ -47,3 +47,7 @@
   background-color: rgb(255, 204, 0);
   border-radius: 3px;
 }
+
+.noteTable span.highlight {
+  background-color: red;
+}

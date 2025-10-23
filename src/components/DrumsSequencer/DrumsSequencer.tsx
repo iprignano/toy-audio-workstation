@@ -32,6 +32,10 @@ export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean 
     }
 
     const interval = setInterval(() => {
+      if (currentStep() === 1) {
+        console.log('synth', performance.now());
+      }
+
       if (currentStep() >= 16) {
         setCurrentStep(0);
       }
