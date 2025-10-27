@@ -21,8 +21,10 @@ export const useAudioSequencing = () => {
         context?.setCurrentStep(0);
       }
 
-      // Music here
       const time = getAudioContext().currentTime;
+
+      // Drums only play on 16th beats, so we
+      // divide the 32nd-based current step by 2
       const drumStep = (context?.currentStep() + 1) / 2;
 
       if (context?.drums.kick[drumStep]) {
@@ -38,7 +40,7 @@ export const useAudioSequencing = () => {
       if (context?.keys[context?.currentStep()]?.length) {
         context?.keys[context?.currentStep()]?.forEach((note) => {
           if (note.freq) {
-            playNote(note.freq, 'sine', 0.1);
+            playNote(note.freq, context?.oscWave(), 0.1);
           }
         });
       }
@@ -46,10 +48,10 @@ export const useAudioSequencing = () => {
       context?.setCurrentStep((step) => step + 1);
     }, 60_000 / context?.bpm() / 8);
     // 1 minute is 60_000ms
-    // `60_000 / bpm` gives us the interval between whole
+    // `60_000 / bpm` gives us the interval between quarter
     //                notes in a minute at the chosen tempo
-    // `(60_000 / bpm) / 8` makes that the interval between
-    //                      8th notes
+    // `60_000 / bpm / 8` makes that the interval between 32nd notes,
+    //                    as they are 1/8 of a quarter note
 
     setIntervalId(interval);
 

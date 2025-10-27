@@ -1,6 +1,7 @@
 import { difference, union } from 'es-toolkit';
-import { createSignal, onMount } from 'solid-js';
+import { createEffect, createSignal, onMount, useContext } from 'solid-js';
 
+import { AppContext } from '../AppContext/AppContext';
 import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../../lib/audio';
 import styles from './styles.module.css';
 
@@ -60,11 +61,16 @@ const oscTypes: { wave: OscillatorType; label: string }[] = [
 ];
 
 export default function Keyboard() {
+  const context = useContext(AppContext);
   const [isPressedDown, setIsPressedDown] = createSignal(false);
   const [currentOctave, setCurrentOctave] = createSignal(3);
   const [oscWaveIndex, setOscWaveIndex] = createSignal(0);
   const [notesPlaying, setNotesPlaying] = createSignal<number[]>([]);
   const [notes, setNotes] = createSignal(initialNotes);
+
+  createEffect(() => {
+    context?.setOscWave(oscTypes[oscWaveIndex()].wave);
+  });
 
   const lowerOctave = () => {
     if (currentOctave() === 2) return;
@@ -81,7 +87,7 @@ export default function Keyboard() {
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq * 2 })));
   };
   const playNote = (note: number) => {
-    playAudioNote(note, oscTypes[oscWaveIndex()].wave);
+    playAudioNote(note, context?.oscWave());
     setNotesPlaying(() => {
       const notes = union(notesPlaying(), [note]);
       return notes;

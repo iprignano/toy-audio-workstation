@@ -14,6 +14,7 @@ export default function AppContextProvider(props: {
   children: JSXElement;
 }) {
   const [bpm, setBpm] = createSignal(120);
+  const [oscWave, setOscWave] = createSignal<OscillatorType>('sine');
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentStep, setCurrentStep] = createSignal(0);
   const [isSequencingKeys, setIsSequencingKeys] = createSignal(true);
@@ -38,6 +39,8 @@ export default function AppContextProvider(props: {
     setIsPlaying,
     isSequencingKeys,
     setIsSequencingKeys,
+    oscWave,
+    setOscWave,
     drums,
     setDrums,
     keys,

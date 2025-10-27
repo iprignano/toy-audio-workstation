@@ -13,6 +13,8 @@ export type AppContextValue = Store<{
   setIsSequencingKeys: Setter<boolean>;
   currentStep: Accessor<number>;
   setCurrentStep: Setter<number>;
+  oscWave: Accessor<OscillatorType>;
+  setOscWave: Setter<OscillatorType>;
   drums: DrumsStore;
   setDrums: SetStoreFunction<DrumsStore>;
   keys: KeysStore;
