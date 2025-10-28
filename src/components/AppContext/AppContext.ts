@@ -3,6 +3,7 @@ import type { Store, SetStoreFunction } from 'solid-js/store';
 
 type DrumsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean[]>>;
 type KeysStore = Store<Record<number, { freq?: number; length?: number }[]>>;
+type InstrumentsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean>>;
 
 export type AppContextValue = Store<{
   bpm: Accessor<number>;
@@ -19,6 +20,8 @@ export type AppContextValue = Store<{
   setDrums: SetStoreFunction<DrumsStore>;
   keys: KeysStore;
   setKeys: SetStoreFunction<KeysStore>;
+  activeInstruments: InstrumentsStore;
+  toggleInstrument: SetStoreFunction<InstrumentsStore>;
 }>;
 
 export const AppContext = createContext<AppContextValue>();

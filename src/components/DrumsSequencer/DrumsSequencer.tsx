@@ -1,9 +1,11 @@
-import { fill } from 'es-toolkit/array';
-import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { useContext } from 'solid-js';
+import { Dynamic } from 'solid-js/web';
 
 import { AppContext } from '../AppContext/AppContext';
-import { getAudioContext, playSnare, playKick, playHihats } from '../../lib/audio';
+import { Snare } from '../Icon/Snare';
+import { Kick } from '../Icon/Kick';
+import { Hihats } from '../Icon/Hihats';
+
 import styles from './styles.module.css';
 
 const STEPS_LENGHT = 16;
@@ -12,6 +14,12 @@ const INSTRUMENTS = ['kick', 'snare', 'hihats'] as const;
 
 type Instrument = (typeof INSTRUMENTS)[number];
 type OnStepToggle = (instrument: Instrument, step: number, isChecked: boolean) => void;
+
+const instrumentIcons = {
+  snare: (props: { fill: string }) => <Snare {...props} />,
+  kick: (props: { fill: string }) => <Kick {...props} />,
+  hihats: (props: { fill: string }) => <Hihats {...props} />,
+};
 
 export default function DrumsSequencer() {
   const context = useContext(AppContext);
@@ -45,7 +53,16 @@ export default function DrumsSequencer() {
       ))}
       {INSTRUMENTS.map((instrument) => (
         <>
-          <div class={styles.instrument}>{instrument}</div>
+          <div
+            classList={{
+              [styles.instrument]: true,
+              [styles.active]: context?.activeInstruments[instrument],
+            }}
+          >
+            <button onClick={() => context?.toggleInstrument(instrument, (active) => !active)}>
+              <Dynamic component={instrumentIcons[instrument]} fill={'white'} />
+            </button>
+          </div>
           {STEPS_ARRAY.map((step) => (
             <div
               classList={{

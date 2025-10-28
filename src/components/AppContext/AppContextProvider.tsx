@@ -28,9 +28,15 @@ export default function AppContextProvider(props: {
     acc[val] = [];
     return acc;
   }, {} as KeysStore);
+  const initialInstrumentsStore = {
+    kick: true,
+    snare: true,
+    hihats: true,
+  };
 
   const [drums, setDrums] = createStore(initialDrumsStore);
   const [keys, setKeys] = createStore(initialKeysStore);
+  const [activeInstruments, toggleInstrument] = createStore(initialInstrumentsStore);
 
   const [appStore, _] = createStore({
     bpm,
@@ -47,6 +53,8 @@ export default function AppContextProvider(props: {
     setKeys,
     currentStep,
     setCurrentStep,
+    activeInstruments,
+    toggleInstrument,
   });
 
   return (

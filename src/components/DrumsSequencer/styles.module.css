@@ -17,12 +17,33 @@
 }
 
 .instrument {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-right: 10px;
+  width: 80px;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, .7);
+}
+
+.instrument button {
+  appearance: none;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 20px;
+}
+
+.instrument svg {
+  opacity: 0.5;
+  transition: all 80ms ease-out;
+}
+
+.instrument.active svg {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgb(255, 0, 179)) drop-shadow(0 2px 1px black);
 }
 
 .step {

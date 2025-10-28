@@ -27,13 +27,13 @@ export const useAudioSequencing = () => {
       // divide the 32nd-based current step by 2
       const drumStep = (context?.currentStep() + 1) / 2;
 
-      if (context?.drums.kick[drumStep]) {
+      if (context?.drums.kick[drumStep] && context?.activeInstruments.kick) {
         playKick(time);
       }
-      if (context?.drums.snare[drumStep]) {
+      if (context?.drums.snare[drumStep] && context?.activeInstruments.snare) {
         playSnare(time);
       }
-      if (context?.drums.hihats[drumStep]) {
+      if (context?.drums.hihats[drumStep] && context?.activeInstruments.hihats) {
         playHihats(time);
       }
 
