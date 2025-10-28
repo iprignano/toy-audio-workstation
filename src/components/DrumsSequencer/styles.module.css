@@ -42,6 +42,7 @@
   border-radius: 5px;
   border-style: none;
   transition: background-color 100ms ease-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
 }
 
 .wrapper input[type='checkbox']:hover {
@@ -50,14 +51,18 @@
 }
 
 .wrapper input[type='checkbox']:checked {
-  background-color: rgb(198, 0, 0);
+  background: radial-gradient(circle, #e6ddff 0%, #bb9fe5 0.5%, #8f559f 80%);
+  background-size: 200%;
+  background-position: 50% 0;
+  transition: background-size 80ms linear;
 }
 
 .wrapper input[type='checkbox']:checked:hover,
 .activeStep input[type='checkbox']:checked {
-  background-color: rgb(238, 15, 15);
+  background-size: 20000%;
+  transition-duration: 10ms;
 }
 
 .activeStep input[type='checkbox'] {
-background-color: rgba(218, 218, 218, 0.6);
+  background-color: rgba(218, 218, 218, 0.6);
 }
