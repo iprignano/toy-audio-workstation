@@ -134,8 +134,8 @@
   padding: 15px 20px;
   text-transform: uppercase;
   background: #5b00ef;
-  background: linear-gradient(0deg, #7a1dfd 0%, #b07bff 60%, #ceadff 100%);
-  background-size: 100% 200%;
+  background: linear-gradient(0deg, #7a1dfd 0%, #b07bff 100%);
+  background-size: 100% 160%;
   background-position: 0 100%;
   border-radius: var(--border-radius);
   min-width: 160px;
@@ -143,7 +143,7 @@
   cursor: pointer;
   letter-spacing: 2px;
   font-size: 14px;
-  transition: all 100ms ease-in-out;
+  transition: all 300ms ease-in-out;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
     0 4px 10px rgba(0, 0, 0, 0.2);
@@ -154,7 +154,8 @@
 }
 
 .playToggle:hover {
-  background-position: 0 50%;
+  background-position: 0 0;
+  transition: all 100ms ease-in-out;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
-    0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1);
+    0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
