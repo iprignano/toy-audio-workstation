@@ -40,8 +40,12 @@
 .noteTable td:not(.noteName) {
   border: none;
   padding: 0;
-  box-shadow: 1px 0 1px #1d1d1d;
+  box-shadow: 1px 0 0 #202020;
   cursor: pointer;
+}
+
+.noteTable td:not(.noteName):nth-of-type(4n + 1) {
+  box-shadow: 1px 0 0 #505050;
 }
 
 .noteTable div {

@@ -25,7 +25,7 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: rgba(255, 255, 255, .7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .instrument button {
@@ -38,12 +38,23 @@
 
 .instrument svg {
   opacity: 0.5;
-  transition: all 80ms ease-out;
+  transition: all 80ms ease-out, filter 300ms ease;
 }
 
 .instrument.active svg {
   opacity: 1;
   filter: drop-shadow(0 0 8px rgb(255, 0, 179)) drop-shadow(0 2px 1px black);
+}
+
+.instrument button:hover svg {
+  opacity: 0.7;
+  filter: drop-shadow(0 0 15px rgb(255, 0, 221));
+}
+
+.instrument.active button:hover svg {
+  opacity: 1;
+  filter: drop-shadow(0 0 15px rgb(255, 0, 221)) drop-shadow(0 0 15px rgb(255, 0, 221))
+    drop-shadow(0 2px 1px black);
 }
 
 .step {
@@ -59,15 +70,15 @@
   padding-top: 100%;
   margin: 0;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, .2);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
   border-style: none;
   transition: background-color 100ms ease-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .wrapper input[type='checkbox']:hover {
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, 0.5);
   transition-duration: 0s;
 }
 
