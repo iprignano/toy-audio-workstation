@@ -92,8 +92,10 @@ export default function SynthSequencer() {
             {(note) => (
               <tr>
                 <td class={styles.noteName}>
-                  {note().note}
-                  {note().octave}
+                  <span>
+                    {note().note}
+                    {note().octave}
+                  </span>
                 </td>
                 <Index each={STEPS_ARRAY}>
                   {(step) => {
