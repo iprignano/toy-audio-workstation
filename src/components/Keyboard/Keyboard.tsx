@@ -145,6 +145,26 @@ export default function Keyboard() {
   return (
     <div class={styles.wrapper}>
       <div class={`${styles.ctrls} monospace`}>
+        <div class={`${styles.logo} grotesk`}>
+          <img src="/taw2k.png" alt="TAW2k logo" />
+        </div>
+
+        <div class={styles.speaker} />
+
+        <div class={styles.octavePicker}>
+          <span class={styles.ctrlTitle}>octave</span>
+          <div class={styles.octaveSelector}>
+            <button class="monospace" onClick={() => lowerOctave()}>
+              -
+            </button>
+            <div class={`${styles.currentOctave} doto`}>
+              {currentOctave()}-{currentOctave() + 1}
+            </div>
+            <button class="monospace" onClick={() => increaseOctave()}>
+              +
+            </button>
+          </div>
+        </div>
         <div class={styles.wavePicker}>
           <span class={styles.ctrlTitle}>wave</span>
           <input
@@ -165,52 +185,35 @@ export default function Keyboard() {
             })}
           </datalist>
         </div>
-
-        <div class={styles.octavePicker}>
-          <span class={styles.ctrlTitle}>octave</span>
-          <div class={styles.octaveSelector}>
-            <button class="monospace" onClick={() => lowerOctave()}>
-              -
-            </button>
-            <div class={`${styles.currentOctave} doto`}>
-              {currentOctave()}-{currentOctave() + 1}
-            </div>
-            <button class="monospace" onClick={() => increaseOctave()}>
-              +
-            </button>
-          </div>
-        </div>
       </div>
       <div class={styles.keys}>
-        {notes().map(({ note, freq }) => {
-          return (
-            <button
-              classList={{
-                [styles.black]: note.includes('#'),
-                [styles.key]: true,
-                [styles.highlighted]: Boolean(notesPlaying().find((f) => f === freq)),
-              }}
-              onMouseDown={(evt) => {
-                // don't do anything if it's not a left-click
-                if (evt.button !== 0) return;
-                evt.preventDefault();
+        {notes().map(({ note, freq }) => (
+          <button
+            classList={{
+              [styles.key]: true,
+              [styles.black]: note.includes('#'),
+              [styles.highlighted]: Boolean(notesPlaying().find((f) => f === freq)),
+            }}
+            onMouseDown={(evt) => {
+              // don't do anything if it's not a left-click
+              if (evt.button !== 0) return;
+              evt.preventDefault();
 
-                setIsPressedDown(true);
-                playNote(freq);
-              }}
-              onMouseUp={() => {
-                setIsPressedDown(false);
-                releaseNote(freq);
-              }}
-              onMouseEnter={() => {
-                if (isPressedDown()) playNote(freq);
-              }}
-              onMouseLeave={() => {
-                releaseNote(freq);
-              }}
-            />
-          );
-        })}
+              setIsPressedDown(true);
+              playNote(freq);
+            }}
+            onMouseUp={() => {
+              setIsPressedDown(false);
+              releaseNote(freq);
+            }}
+            onMouseEnter={() => {
+              if (isPressedDown()) playNote(freq);
+            }}
+            onMouseLeave={() => {
+              releaseNote(freq);
+            }}
+          />
+        ))}
       </div>
     </div>
   );
