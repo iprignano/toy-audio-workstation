@@ -87,6 +87,10 @@
   transition: opacity 200ms ease;
 }
 
+.synthSwitch:hover div:not(.active) {
+  opacity: 0.5;
+}
+
 .synthSwitch .active {
   opacity: 1;
 }

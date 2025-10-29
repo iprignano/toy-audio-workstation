@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header class={styles.header}>
       <div class={styles.logo}>
-        <h1 class="monospace">> toy_audio_workstation</h1>
+        <h1 class="monospace">&gt; toy_audio_workstation</h1>
       </div>
     </header>
   );

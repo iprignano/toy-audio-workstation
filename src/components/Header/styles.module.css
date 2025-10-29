@@ -7,8 +7,11 @@
 }
 
 .header .logo {
-  font-size: 10px;
   padding: 10px 20px;
-  font-variation-settings: 'wght' 300;
-  transition: all 0.3s ease;
+}
+
+.logo h1 {
+  font-size: 17px;
+  font-weight: 300;
+  color: #a7a7a7;
 }
