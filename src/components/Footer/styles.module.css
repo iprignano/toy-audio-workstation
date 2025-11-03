@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   width: 100%;
   height: min-content;
   background-color: rgb(51, 51, 51);
@@ -16,16 +16,15 @@
   display: flex;
   align-items: stretch;
   position: relative;
-  padding-left: 30px;
   margin-left: 10px;
 }
 
 .tempo label {
+  display: none;
   position: absolute;
   top: 14px;
   left: 0px;
   transform: rotate(-90deg);
-  display: block;
   align-self: center;
   height: min-content;
   font-size: 11px;
@@ -35,7 +34,7 @@
 
 .tempo button {
   font-size: 20px;
-  padding: 5px 10px;
+  padding: 5px 8px;
   background-color: rgb(70, 70, 70);
   color: rgb(152, 152, 152);
   transition: background-color 100ms ease;
@@ -61,9 +60,9 @@
 }
 
 .tempo input {
-  width: 80px;
+  width: 55px;
   appearance: none;
-  padding: 10px 15px;
+  padding: 5px 10px;
   background-color: rgb(35, 35, 35);
   color: white;
   border: none;
@@ -84,7 +83,7 @@
 
 .synthSwitch div {
   opacity: 0.3;
-  transition: opacity 200ms ease;
+  transition: opacity 200ms cubic-bezier(0.22, 0.73, 0.27, 1);
 }
 
 .synthSwitch:hover div:not(.active) {
@@ -117,7 +116,7 @@
   height: 100%;
   border: 2px solid #b07bff;
   border-radius: var(--border-radius);
-  transition: all 200ms ease-in-out;
+  transition: all 200ms cubic-bezier(0.22, 0.73, 0.27, 1);
   box-shadow: inset 0 0 5px rgba(255, 88, 230, 0.3);
 }
 
@@ -134,27 +133,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 15px 20px;
+  gap: 5px;
+  padding: 10px 20px;
   text-transform: uppercase;
   background: #5b00ef;
   background: linear-gradient(0deg, #7a1dfd 0%, #b07bff 100%);
   background-size: 100% 160%;
   background-position: 0 100%;
   border-radius: var(--border-radius);
-  min-width: 160px;
   text-align: center;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   font-size: 14px;
   transition: all 300ms ease-in-out;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.1),
     0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .playToggle svg {
-  filter: drop-shadow(0 1px 0px rgba(0, 0, 0, 0.8));
+  width: 2ch;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.3));
 }
 
 .playToggle:hover {
@@ -162,4 +161,32 @@
   transition: all 100ms ease-in-out;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
     0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (min-width: 760px) {
+  .footer {
+    padding: 20px;
+  }
+  .tempo {
+    padding-left: 30px;
+  }
+  .tempo button {
+    font-size: 20px;
+    padding: 5px 10px;
+  }
+  .tempo label {
+    display: block;
+  }
+  .tempo input {
+    width: 80px;
+    padding: 10px 15px;
+  }
+  .playToggle {
+    min-width: 160px;
+    gap: 10px;
+    padding: 15px 20px;
+  }
+  .playToggle svg {
+    width: auto;
+  }
 }

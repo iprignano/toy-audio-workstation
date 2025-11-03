@@ -1,13 +1,14 @@
 .wrapper {
   display: grid;
   width: 100%;
+  min-width: 1000px;
+  max-width: 1200px;
   height: min-content;
-  max-width: 1800px;
   color: white;
   padding: 20px;
   grid-template-columns: min-content repeat(16, 1fr);
   grid-template-rows: min-content 1fr 1fr 1fr;
-  gap: 10px;
+  gap: 0 10px;
   margin: 0 auto;
   justify-content: center;
   align-items: center;

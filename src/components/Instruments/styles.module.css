@@ -1,9 +1,9 @@
 .instrument {
   display: flex;
-  flex-direction: row;
   height: 50%;
   position: relative;
-  padding-left: 60px;
+  overflow: hidden;
+  overflow-x: scroll;
 }
 
 .drums {
@@ -15,24 +15,35 @@
 }
 
 .title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 100%;
-  overflow: hidden;
-  background: rgba(0, 0, 0, .2);
+  display: none;
 }
 
-.title span {
-  text-transform: uppercase;
-  display: block;
-  font-size: 11px;
-  letter-spacing: 3px;
-  font-weight: 300;
-  transform: rotate(-90deg);
-  color: rgba(255, 255, 255, .9);
+@media screen and (min-width: 760px) {
+  .instrument {
+    padding-left: 60px;
+  }
+
+  .title {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .title span {
+    text-transform: uppercase;
+    display: block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 300;
+    transform: rotate(-90deg);
+    color: rgba(255, 255, 255, 0.9);
+  }
 }
