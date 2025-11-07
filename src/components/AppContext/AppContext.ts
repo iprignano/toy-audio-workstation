@@ -12,6 +12,8 @@ export type AppContextValue = Store<{
   setIsPlaying: Setter<boolean>;
   isSequencingKeys: Accessor<boolean>;
   setIsSequencingKeys: Setter<boolean>;
+  isModalOpen: Accessor<boolean>;
+  setIsModalOpen: Setter<boolean>;
   currentStep: Accessor<number>;
   setCurrentStep: Setter<number>;
   oscWave: Accessor<OscillatorType>;

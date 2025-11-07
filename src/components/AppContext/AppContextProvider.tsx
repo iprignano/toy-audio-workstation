@@ -18,6 +18,7 @@ export default function AppContextProvider(props: {
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentStep, setCurrentStep] = createSignal(0);
   const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
+  const [isModalOpen, setIsModalOpen] = createSignal(false);
 
   const initialDrumsStore = {
     kick: fill(Array(16), false),
@@ -45,6 +46,8 @@ export default function AppContextProvider(props: {
     setIsPlaying,
     isSequencingKeys,
     setIsSequencingKeys,
+    isModalOpen,
+    setIsModalOpen,
     oscWave,
     setOscWave,
     drums,
