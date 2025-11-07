@@ -1,5 +1,5 @@
 import { difference, union } from 'es-toolkit';
-import { createEffect, createSignal, onMount, useContext } from 'solid-js';
+import { createEffect, createSignal, onCleanup, onMount, useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
 import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../../lib/audio';
@@ -140,6 +140,11 @@ export default function Keyboard() {
 
     document?.addEventListener('keydown', keypressHandler);
     document?.addEventListener('keyup', keypressHandler);
+  });
+
+  onCleanup(() => {
+    document?.removeEventListener('keydown', keypressHandler);
+    document?.removeEventListener('keyup', keypressHandler);
   });
 
   return (
