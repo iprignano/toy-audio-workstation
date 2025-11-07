@@ -4,6 +4,8 @@ body {
   background-color: rgb(40, 40, 40);
   height: 100vh;
   scrollbar-color: #ffb11f transparent;
+  font-family: 'Space Grotesk', sans-serif;
+  font-style: normal;
 }
 
 .grotesk {
