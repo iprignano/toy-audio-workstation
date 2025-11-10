@@ -41,7 +41,8 @@ export default function SaveSongModal(props: { onClose(): void }) {
 
       setTimeout(() => {
         setHasSaved(false);
-      }, 3000);
+        props.onClose();
+      }, 1000);
     } else {
       setHasError(true);
     }
