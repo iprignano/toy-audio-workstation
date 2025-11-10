@@ -41,7 +41,12 @@ export const saveSong = (song: DeserializedSong) => {
 
     // Spicy conversion to turn the Solid proxies
     // back into plain JavaScript objects
-    const plainSong: DeserializedSong = JSON.parse(JSON.stringify(song));
+    const plainSong: DeserializedSong = JSON.parse(
+      JSON.stringify({
+        ...song,
+        created: new Date().toISOString(),
+      }),
+    );
     const newSong = serializeSong(plainSong);
 
     if (!savedSongs) {

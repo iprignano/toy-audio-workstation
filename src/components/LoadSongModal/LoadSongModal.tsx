@@ -20,6 +20,9 @@ export default function LoadSongModal(props: { onClose(): void }) {
     windowed(savedSongs, WINDOW_SIZE, WINDOW_SIZE, { partialWindows: true }),
   );
   const numberOfPages = Math.ceil(savedSongs.length / WINDOW_SIZE);
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'short',
+  });
 
   const handleSongLoading = () => {
     setHasError(false);
@@ -48,7 +51,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
                   }}
                   onClick={() => setSelectedSong(song)}
                 >
-                  {song.name}
+                  <span>[{dateFormatter.format(new Date(song.created))}]</span> {song.name}
                 </button>
               ))}
             </div>

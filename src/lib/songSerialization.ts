@@ -8,6 +8,7 @@ export type SerializedSong = {
   k: {
     [step: number]: [freq: number, length: number][];
   };
+  c: string;
 };
 
 export type DeserializedSong = {
@@ -20,6 +21,7 @@ export type DeserializedSong = {
   keys: {
     [step: number]: { freq: number; length: number }[];
   };
+  created: string;
 };
 
 export const serializeSong = (song: DeserializedSong): SerializedSong => {
@@ -40,6 +42,7 @@ export const serializeSong = (song: DeserializedSong): SerializedSong => {
       h: serializeDrumSequence(song.drums.hihats),
     },
     k: serializeKeysSequence(song.keys),
+    c: song.created,
   };
 };
 
@@ -59,5 +62,6 @@ export const deserializeSong = (song: SerializedSong): DeserializedSong => {
       hihats: deserializeDrumSequence(song.d.h),
     },
     keys: deserializeKeysSequence(song.k),
+    created: song.c,
   };
 };
