@@ -15,8 +15,6 @@ export default function Modal(props: { onClose(): void; children: JSXElement }) 
   });
 
   const handleOverlayClick = (evt: MouseEvent) => {
-    evt.preventDefault();
-
     if ((evt.target as HTMLElement).id === 'overlay') {
       props.onClose();
     }
