@@ -9,13 +9,25 @@ const STORAGE_KEY = 'taw_v0';
 
 type TawStorage = { songs: SerializedSong[] };
 
-export const getSavedSongs = () => {
+export const getSongStore = () => {
   try {
     const storage = localStorage.getItem(STORAGE_KEY);
     if (storage) {
       const parsedStorage: TawStorage = JSON.parse(storage);
-      return parsedStorage.songs.map(deserializeSong);
+
+      return parsedStorage.songs;
     }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const getSavedSongs = () => {
+  try {
+    const songStorage = getSongStore();
+    if (songStorage) return songStorage.map(deserializeSong);
     return null;
   } catch (err) {
     console.error(err);
@@ -25,7 +37,7 @@ export const getSavedSongs = () => {
 
 export const saveSong = (song: DeserializedSong) => {
   try {
-    const savedSongs = getSavedSongs();
+    const savedSongs = getSongStore();
 
     // Spicy conversion to turn the Solid proxies
     // back into plain JavaScript objects

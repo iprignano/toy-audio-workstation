@@ -51,8 +51,6 @@ export const deserializeSong = (song: SerializedSong): DeserializedSong => {
       return acc;
     }, {} as DeserializedSong['keys']);
 
-  console.log(song);
-
   return {
     name: song.n,
     drums: {
