@@ -11,6 +11,8 @@ import { saveSong } from '../../lib/storage';
 export default function SaveSongModal(props: { onClose(): void }) {
   const context = useContext(AppContext);
   const [songName, setSongName] = createSignal('');
+  const [hasSaved, setHasSaved] = createSignal(false);
+  const [hasError, setHasError] = createSignal(false);
   const placeholderSongs = [
     'Holy, Holy',
     'Another brick in the wall',
@@ -35,7 +37,17 @@ export default function SaveSongModal(props: { onClose(): void }) {
     // back into plain JavaScript objects
     song = JSON.parse(JSON.stringify(song));
 
-    saveSong(song.name, serializeSong(song as DeserializedSong));
+    const success = saveSong(song.name, serializeSong(song as DeserializedSong));
+
+    if (success) {
+      setHasSaved(true);
+
+      setTimeout(() => {
+        setHasSaved(false);
+      }, 3000);
+    } else {
+      setHasError(true);
+    }
   };
 
   return (
@@ -51,13 +63,13 @@ export default function SaveSongModal(props: { onClose(): void }) {
             placeholder={`e.g. ${placeholderSongs.at(random(placeholderSongs.length))}`}
           />
 
+          {true && <div class={styles.error}>There was a problem saving your song. Try later.</div>}
+
           <div class={styles.actions}>
             <Button variant="alternate" onClick={() => props.onClose()}>
               Cancel
             </Button>
-            <Button type="submit" icon="pause">
-              Save
-            </Button>
+            <Button type="submit">{hasSaved() ? 'Saved!' : 'Save'}</Button>
           </div>
         </form>
       </div>
