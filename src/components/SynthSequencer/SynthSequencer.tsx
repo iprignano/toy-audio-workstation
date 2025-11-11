@@ -1,5 +1,5 @@
 import { throttle } from 'es-toolkit/function';
-import { createMemo, createSignal, Index, useContext } from 'solid-js';
+import { createEffect, createMemo, createSignal, Index, onCleanup, useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
 
@@ -42,6 +42,9 @@ const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
 export default function SynthSequencer() {
   const context = useContext(AppContext);
+  const [tdSize, setTdSize] = createSignal(0);
+  const [tableHeight, setTableHeight] = createSignal(0);
+  const [markerTransitionDuration, setMarkerTransitionDuration] = createSignal(0);
   const [draggedNote, setDraggedNote] = createSignal<{ step: number; freq: number } | null>(null);
 
   const toggleNote = ({ step, freq }: { step: number; freq: number }) => {
@@ -84,14 +87,38 @@ export default function SynthSequencer() {
     });
   }, 100);
 
+  let tableRef!: HTMLTableElement;
+  let tdRef!: HTMLTableCellElement;
+  createEffect(() => {
+    setTableHeight(tableRef.getBoundingClientRect().height);
+    const setCellSize = () => setTdSize(tdRef.getBoundingClientRect().width);
+    setCellSize();
+
+    // Needed to avoid the marker animate back to step 0 when the loop wraps
+    setMarkerTransitionDuration(context?.currentStep() === 32 ? 0 : 60 / context?.bpm()! / 4);
+
+    document.addEventListener('resize', setCellSize);
+    onCleanup(() => {
+      document.removeEventListener('resize', setCellSize);
+    });
+  });
+
   return (
     <div class={styles.wrapper}>
-      <table class={styles.noteTable}>
+      <div
+        class={styles.timeMarker}
+        style={{
+          height: `${tableHeight()}px`,
+          transform: `translate3d(${tdSize() + context?.currentStep()! * tdSize()}px, 0, 0)`,
+          'transition-duration': `${markerTransitionDuration()}s`,
+        }}
+      ></div>
+      <table class={styles.noteTable} ref={tableRef}>
         <tbody>
           <Index each={allNotes}>
             {(note) => (
               <tr>
-                <td class={styles.noteName}>
+                <td class={styles.noteName} ref={tdRef}>
                   <span>
                     {note().note}
                     {note().octave}
