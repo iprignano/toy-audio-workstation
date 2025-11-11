@@ -5,7 +5,11 @@ import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import styles from './styles.module.css';
-import type { DeserializedSong } from '../../lib/songSerialization';
+import {
+  deserializeSong,
+  type DeserializedSong,
+  type SerializedSong,
+} from '../../lib/songSerialization';
 
 const WINDOW_SIZE = 7;
 
@@ -14,7 +18,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
   const [page, setPage] = createSignal(0);
   const [activeTab, setActiveTab] = createSignal<'savedSongs' | 'loadFromString'>('savedSongs');
   const [hasError, setHasError] = createSignal(false);
-  const [hasFailedParsing, setHasFailedParsing] = createSignal(false);
+  const [hasParsingError, setHasParsingError] = createSignal(false);
   const [selectedSong, setSelectedSong] = createSignal<DeserializedSong | null>(null);
   const savedSongs = getSavedSongs() || [];
   const hasSavedSongs = (savedSongs?.length ?? 0) > 0;
@@ -37,9 +41,17 @@ export default function LoadSongModal(props: { onClose(): void }) {
     }
   };
 
-  const handleSongStringParsing = () => {
-    setHasFailedParsing(false);
-    // TODO: implement me
+  const handleSongStringParsing = (evt: { target: HTMLTextAreaElement }) => {
+    setHasParsingError(false);
+    try {
+      const sharedString = evt.target.value;
+      const parsedString = JSON.parse(atob(sharedString)) as SerializedSong;
+      const deserializedSong = deserializeSong(parsedString);
+      setSelectedSong(deserializedSong);
+    } catch (err) {
+      console.error(err);
+      setHasParsingError(true);
+    }
   };
 
   return (
@@ -112,9 +124,11 @@ export default function LoadSongModal(props: { onClose(): void }) {
                   Paste a song string below to import someone else's tune:
                 </p>
                 <textarea rows={2} class={styles.textArea} onChange={handleSongStringParsing} />
-                {hasFailedParsing() && (
+                {hasParsingError() && (
                   <div class={styles.error}>
-                    Sorry, this doesn't look like a song we can import.
+                    Sorry, that doesn't look like a shared song string.
+                    <br />
+                    Make sure you copy-pasted the whole string correctly.
                   </div>
                 )}
               </Match>
