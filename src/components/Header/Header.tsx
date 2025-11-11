@@ -11,6 +11,9 @@ export default function Header() {
 
   return (
     <header class={styles.header}>
+      <div class={styles.logo}>
+        <img src="/logo.svg" />
+      </div>
       <button class={styles.button} type="button" onClick={() => setIsSavingSong(true)}>
         Save
       </button>

@@ -72,3 +72,8 @@ button {
 button:disabled {
   cursor: default;
 }
+
+input {
+  appearance: none;
+  border: none;
+}

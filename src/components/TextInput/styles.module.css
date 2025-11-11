@@ -29,5 +29,4 @@
 .input:focus {
   transition: 60ms ease;
   outline: 1px solid var(--primary-accent-color);
-  box-shadow: 0 0 5px rgba(255, 149, 0, 0.767);
 }

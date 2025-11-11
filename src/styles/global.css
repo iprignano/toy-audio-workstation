@@ -3,10 +3,19 @@
   --mono-font-family: 'Geist Mono', monospace;
 }
 
+*:focus-visible {
+  outline: 1px solid var(--primary-accent-color);
+}
+
+*::selection {
+  color: black;
+  background-color: var(--primary-accent-color);
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-optical-sizing: auto;
-  background-color: rgb(40, 40, 40);
+  background-color: #282828;
   height: 100vh;
   font-family: 'Space Grotesk', sans-serif;
   font-style: normal;

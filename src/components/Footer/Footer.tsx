@@ -26,6 +26,7 @@ export default function Footer() {
       <div class={styles.synthSwitch}>
         <input
           type="checkbox"
+          id="synthSwitch"
           onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
         />
         <div classList={{ [styles.active]: !context?.isSequencingKeys() }}>
@@ -41,7 +42,7 @@ export default function Footer() {
         onClick={() => context?.setIsPlaying((isPlaying) => !isPlaying)}
       >
         {context?.isPlaying() ? 'Pause' : 'Play'}
-        <Dynamic component={options[context?.isPlaying() ? 'pause' : 'play']} fill="white" />
+        <Dynamic component={options[context?.isPlaying() ? 'pause' : 'play']} fill="black" />
       </button>
     </footer>
   );
