@@ -1,5 +1,5 @@
-import { createMemo, createSignal, onCleanup } from 'solid-js';
-import type { AppContextValue } from '../AppContext/AppContext';
+import { createMemo, createSignal, onCleanup, useContext } from 'solid-js';
+import { AppContext } from '../AppContext/AppContext';
 
 export type MarkerStyles = {
   height: string;
@@ -8,14 +8,13 @@ export type MarkerStyles = {
 };
 
 export const useTimeMarker = ({
-  context,
   tableRef,
   tdRef,
 }: {
-  context: AppContextValue;
   tableRef: HTMLTableElement;
   tdRef: HTMLTableCellElement;
 }) => {
+  const context = useContext(AppContext)!;
   const [tdSize, setTdSize] = createSignal(0);
   const [tableHeight, setTableHeight] = createSignal(0);
   const [markerTransitionDuration, setMarkerTransitionDuration] = createSignal(0);

@@ -1,4 +1,3 @@
-import { throttle } from 'es-toolkit/function';
 import { createEffect, createMemo, createSignal, Index, useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
@@ -6,6 +5,7 @@ import { noteRegistry } from './notes';
 import { useTimeMarker, type MarkerStyles } from './useTimeMarker';
 
 import styles from './styles.module.css';
+import { useNotesDragEvents } from './useNotesDragEvents';
 
 const STEPS_LENGHT = 32;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
@@ -16,10 +16,10 @@ export default function SynthSequencer() {
   const context = useContext(AppContext)!;
 
   const [timeMarkerStyles, setTimeMarkerStyles] = createSignal<MarkerStyles>();
-  const [draggedNote, setDraggedNote] = createSignal<{ step: number; freq: number } | null>(null);
+  const { onNoteDragStart, onNoteDragEnd, onCellDragOver } = useNotesDragEvents();
 
   createEffect(() => {
-    const markerStyles = useTimeMarker({ context, tableRef, tdRef })!;
+    const markerStyles = useTimeMarker({ tableRef, tdRef })!;
     setTimeMarkerStyles(markerStyles);
   });
 
@@ -30,38 +30,6 @@ export default function SynthSequencer() {
       context.setKeys(step, context.keys[step].length, { freq, length: 1 });
     }
   };
-
-  const onNoteDragStart = (evt: DragEvent, { step, freq }: { step: number; freq: number }) => {
-    // Prevents cursor from going ham when dragging the note
-    if (evt.dataTransfer) evt.dataTransfer.effectAllowed = 'none';
-
-    setDraggedNote({ step, freq });
-  };
-  const onNoteDragEnd = (_: DragEvent) => {
-    setDraggedNote(null);
-  };
-  const onCellDragOver = throttle((evt: DragEvent, { step }: { step: number }) => {
-    evt.preventDefault();
-
-    if (evt.target !== evt.currentTarget) {
-      // Ignore dragover events that originated
-      // from targets different than the table cells
-      // on which the handler is defined
-      // (namely, the note div itself)
-      return;
-    }
-
-    if (step < (draggedNote()?.step ?? 0)) {
-      // Ignore events where the user dragged the
-      // handle beyond the start of the note
-      return;
-    }
-
-    context.setKeys(draggedNote()?.step as number, (note) => note?.freq === draggedNote()?.freq, {
-      freq: draggedNote()?.freq,
-      length: Math.max(1, step + 1 - (draggedNote()?.step ?? 0)),
-    });
-  }, 100);
 
   return (
     <div class={styles.wrapper}>
