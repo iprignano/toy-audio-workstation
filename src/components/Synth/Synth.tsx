@@ -1,4 +1,4 @@
-import { Switch, Match, useContext } from 'solid-js';
+import { useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
 import Keyboard from '../Keyboard/Keyboard';
@@ -10,15 +10,19 @@ export default function Synth() {
   const context = useContext(AppContext);
 
   return (
-    <div class={styles.wrapper}>
-      <Switch>
-        <Match when={context?.isSequencingKeys()}>
-          <SynthSequencer />
-        </Match>
-        <Match when={!context?.isSequencingKeys()}>
-          <Keyboard />
-        </Match>
-      </Switch>
-    </div>
+    <>
+      <div
+        class={styles.wrapper}
+        style={{ display: context?.isSequencingKeys() ? 'block' : 'none' }}
+      >
+        <SynthSequencer />
+      </div>
+      <div
+        class={styles.wrapper}
+        style={{ display: context?.isSequencingKeys() ? 'none' : 'block' }}
+      >
+        <Keyboard />
+      </div>
+    </>
   );
 }
