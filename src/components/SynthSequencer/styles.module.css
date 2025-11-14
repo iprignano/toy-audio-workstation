@@ -72,7 +72,6 @@
   height: 100%;
   background: var(--primary-accent-color);
   border-radius: 4px;
-  pointer-events: none;
   transition: width 100ms ease-out, background 100ms ease;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -86,7 +85,6 @@
   height: 100%;
   z-index: 1;
   cursor: ew-resize;
-  pointer-events: all;
   opacity: 0;
 }
 

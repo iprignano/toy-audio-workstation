@@ -16,20 +16,13 @@ export default function SynthSequencer() {
   const context = useContext(AppContext)!;
 
   const [timeMarkerStyles, setTimeMarkerStyles] = createSignal<MarkerStyles>();
-  const { onNoteDragStart, onNoteDragEnd, onCellDragOver } = useNotesDragEvents();
+  const { draggedNote, dragTargetNote, onNoteMouseDown, onNoteMouseUp, onCellMouseEnter } =
+    useNotesDragEvents();
 
   createEffect(() => {
     const markerStyles = useTimeMarker({ tableRef, tdRef })!;
     setTimeMarkerStyles(markerStyles);
   });
-
-  const toggleNote = ({ step, freq }: { step: number; freq: number }) => {
-    if (context.keys[step].find((n) => n.freq === freq)) {
-      context.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
-    } else {
-      context.setKeys(step, context.keys[step].length, { freq, length: 1 });
-    }
-  };
 
   return (
     <div class={styles.wrapper}>
@@ -47,31 +40,47 @@ export default function SynthSequencer() {
                 </td>
                 <Index each={STEPS_ARRAY}>
                   {(step) => {
-                    const matchingNote = createMemo(() =>
+                    const activeNote = createMemo(() =>
                       context.keys[step()].find((n) => n?.freq === note().freq),
                     );
+                    const noteProps = { step: step(), freq: note().freq };
+                    const opacity = createMemo(() => {
+                      // Show the note if it's currently being hovered while dragging
+                      if (
+                        dragTargetNote()?.freq === note().freq &&
+                        dragTargetNote()?.step === step()
+                      ) {
+                        return 1;
+                      }
+
+                      // Temporarily hide the note if it's being dragged to another cell
+                      if (
+                        dragTargetNote() &&
+                        draggedNote()?.freq === note().freq &&
+                        draggedNote()?.step === step()
+                      ) {
+                        return 0;
+                      }
+
+                      // Finally, show it if it's active
+                      return activeNote() ? 1 : 0;
+                    });
+
                     return (
-                      <td
-                        onClick={() => toggleNote({ step: step(), freq: note().freq })}
-                        onDragOver={(evt) => onCellDragOver(evt, { step: step() })}
-                      >
-                        {matchingNote() && (
-                          <div
-                            class={step() === context.currentStep() ? `${styles.highlight}` : ''}
-                            style={{ width: `calc(100% * ${matchingNote()?.length})` }}
-                          >
-                            {note().note}
-                            {note().octave}
-                            <span
-                              class={styles.noteHandle}
-                              draggable="true"
-                              onDragStart={(evt) =>
-                                onNoteDragStart(evt, { step: step(), freq: note().freq })
-                              }
-                              onDragEnd={(evt) => onNoteDragEnd(evt)}
-                            />
-                          </div>
-                        )}
+                      <td onMouseEnter={(evt) => onCellMouseEnter(evt, noteProps)}>
+                        <div
+                          onMouseDown={(evt) => onNoteMouseDown(evt, noteProps)}
+                          onMouseUp={(evt) => onNoteMouseUp(evt, noteProps)}
+                          class={step() === context.currentStep() ? `${styles.highlight}` : ''}
+                          style={{
+                            opacity: opacity(),
+                            width: `calc(100% * ${activeNote()?.length})`,
+                          }}
+                        >
+                          {note().note}
+                          {note().octave}
+                          {/* <span class={styles.noteHandle} /> */}
+                        </div>
                       </td>
                     );
                   }}
