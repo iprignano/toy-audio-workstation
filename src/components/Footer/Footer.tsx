@@ -38,7 +38,7 @@ export default function Footer() {
       </div>
       <button
         type="button"
-        class={`${styles.playToggle} monospace`}
+        class={`${styles.playToggle} ${context?.isPlaying() ? styles.isPlaying : ''} monospace`}
         onClick={() => context?.setIsPlaying((isPlaying) => !isPlaying)}
       >
         {context?.isPlaying() ? 'Pause' : 'Play'}
