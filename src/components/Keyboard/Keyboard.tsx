@@ -111,6 +111,9 @@ export default function Keyboard() {
     // a meta key pressed (e.g. ctrl-t, cmd-l, etc)
     // or if a modal is currently open
     if (evt.metaKey || context?.isModalOpen()) return;
+    // Don't intercept the event if an input
+    // or button is currently focused
+    if (['INPUT', 'BUTTON', 'TEXTAREA'].includes(document.activeElement?.tagName ?? '')) return;
 
     if (evt.type === 'keydown' && evt.key === 'z') {
       evt.preventDefault();
