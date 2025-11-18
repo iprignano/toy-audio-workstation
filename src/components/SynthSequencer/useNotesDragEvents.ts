@@ -1,7 +1,11 @@
 import { createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
 
-type NoteProps = { step: number; freq: number };
+type NoteProps = {
+  step: number;
+  freq: number;
+  length: number;
+};
 
 export const useNotesDragEvents = () => {
   const context = useContext(AppContext)!;
@@ -10,7 +14,7 @@ export const useNotesDragEvents = () => {
   const [isChangingNoteLength, setIsChangingNoteLength] = createSignal<boolean>(false);
   const [clickedNote, setClickedNote] = createSignal<NoteProps | null>(null);
   const [draggedNote, setDraggedNote] = createSignal<NoteProps | null>(null);
-  const [dragTargetNote, setDragTargetNote] = createSignal<NoteProps | null>(null);
+  const [dragHoveredNote, setDragHoveredNote] = createSignal<NoteProps | null>(null);
 
   const onNoteMouseDown = (evt: MouseEvent, noteProps: NoteProps) => {
     evt.preventDefault();
@@ -39,12 +43,15 @@ export const useNotesDragEvents = () => {
       if (context.keys[step].find((n) => n.freq === freq)) {
         context.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
       } else {
-        context.setKeys(step, context.keys[step].length, { freq, length: 1 });
+        context.setKeys(step, context.keys[step].length, {
+          freq,
+          length: draggedNote()?.length || 1,
+        });
       }
 
       setClickedNote(null);
       setDraggedNote(null);
-      setDragTargetNote(null);
+      setDragHoveredNote(null);
     }
   };
 
@@ -64,8 +71,8 @@ export const useNotesDragEvents = () => {
     } else {
       // The user is dragging a note
       // to a different cell
-      setDraggedNote(clickedNote);
-      setDragTargetNote(noteProps);
+      setDraggedNote(clickedNote());
+      setDragHoveredNote(noteProps);
     }
   };
 
@@ -84,7 +91,8 @@ export const useNotesDragEvents = () => {
     onNoteLengthMouseDown,
     onCellMouseEnter,
     draggedNote,
-    dragTargetNote,
+    dragHoveredNote,
     isChangingNoteLength,
+    isPressingDown,
   };
 };

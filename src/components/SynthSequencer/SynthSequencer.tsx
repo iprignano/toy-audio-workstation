@@ -18,12 +18,13 @@ export default function SynthSequencer() {
   const [timeMarkerStyles, setTimeMarkerStyles] = createSignal<MarkerStyles>();
   const {
     draggedNote,
-    dragTargetNote,
+    dragHoveredNote,
     onNoteMouseDown,
     onNoteMouseUp,
     onCellMouseEnter,
     onNoteLengthMouseDown,
     isChangingNoteLength,
+    isPressingDown,
   } = useNotesDragEvents();
 
   createEffect(() => {
@@ -47,22 +48,27 @@ export default function SynthSequencer() {
                 </td>
                 <Index each={STEPS_ARRAY}>
                   {(step) => {
-                    const activeNote = createMemo(() =>
+                    const noteInSlot = createMemo(() =>
                       context.keys[step()].find((n) => n?.freq === note().freq),
                     );
-                    const noteProps = { step: step(), freq: note().freq };
+                    const isDragHoveredNote = createMemo(
+                      () =>
+                        dragHoveredNote()?.freq === note().freq &&
+                        dragHoveredNote()?.step === step(),
+                    );
                     const isNoteVisible = createMemo(() => {
                       // Show the note if it's currently being hovered while dragging
                       if (
-                        dragTargetNote()?.freq === note().freq &&
-                        dragTargetNote()?.step === step()
+                        dragHoveredNote() &&
+                        dragHoveredNote()?.freq === note().freq &&
+                        dragHoveredNote()?.step === step()
                       ) {
                         return true;
                       }
 
                       // Temporarily hide the note if it's being dragged to another cell
                       if (
-                        dragTargetNote() &&
+                        dragHoveredNote() &&
                         draggedNote()?.freq === note().freq &&
                         draggedNote()?.step === step()
                       ) {
@@ -70,7 +76,20 @@ export default function SynthSequencer() {
                       }
 
                       // Finally, show it if it's active
-                      return activeNote() ? true : false;
+                      return noteInSlot() ? true : false;
+                    });
+
+                    let noteProps = {
+                      step: step(),
+                      freq: note().freq,
+                      length: 1,
+                    };
+                    createEffect(() => {
+                      noteProps = {
+                        step: step(),
+                        freq: note().freq,
+                        length: noteInSlot()?.length || 1,
+                      };
                     });
 
                     return (
@@ -81,11 +100,13 @@ export default function SynthSequencer() {
                           classList={{
                             [styles.highlight]: step() === context.currentStep(),
                             [styles.visible]: isNoteVisible(),
-                            [styles.grabbing]: !isChangingNoteLength() && Boolean(draggedNote()),
+                            [styles.grabbing]: !isChangingNoteLength() && isPressingDown(),
                             [styles.resizing]: isChangingNoteLength(),
                           }}
                           style={{
-                            width: `calc(100% * ${activeNote()?.length})`,
+                            width: `calc(100% * ${
+                              isDragHoveredNote() ? draggedNote()?.length : noteInSlot()?.length
+                            })`,
                           }}
                         >
                           {note().note}
@@ -95,7 +116,7 @@ export default function SynthSequencer() {
                               // Ignore pointer events on the length handle
                               // if the user is dragging a note around or
                               // if the note itself is not active
-                              'pointer-events': draggedNote() || !activeNote() ? 'none' : 'auto',
+                              'pointer-events': draggedNote() || !noteInSlot() ? 'none' : 'auto',
                             }}
                             onMouseDown={(evt) => onNoteLengthMouseDown(evt, noteProps)}
                             class={styles.lengthHandle}
