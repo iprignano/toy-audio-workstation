@@ -1,9 +1,16 @@
 import { Dynamic } from 'solid-js/web';
+import { Load } from '../Icon/Load';
+import { Save } from '../Icon/Save';
+import { Copy } from '../Icon/Copy';
 import styles from './styles.module.css';
 import type { ComponentProps, ValidComponent } from 'solid-js';
 
 // TODO: Add icons
-const iconComponents: Record<string, ValidComponent> = {};
+const iconComponents: Record<string, ValidComponent> = {
+  load: () => <Load />,
+  save: () => <Save />,
+  copy: () => <Copy />,
+};
 
 export default function Button(
   props: {

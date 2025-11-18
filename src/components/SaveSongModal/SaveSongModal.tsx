@@ -75,7 +75,9 @@ export default function SaveSongModal(props: { onClose(): void }) {
             <Button variant="alternate" onClick={() => props.onClose()}>
               Cancel
             </Button>
-            <Button type="submit">{hasSaved() ? 'Saved!' : 'Save'}</Button>
+            <Button type="submit" icon="save">
+              {hasSaved() ? 'Saved!' : 'Save'}
+            </Button>
           </div>
         </form>
       </div>

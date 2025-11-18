@@ -157,7 +157,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
           <Button variant="alternate" onClick={() => props.onClose()}>
             Cancel
           </Button>
-          <Button disabled={!selectedSong()} type="button" onClick={handleSongLoading}>
+          <Button disabled={!selectedSong()} type="button" onClick={handleSongLoading} icon="load">
             Load
           </Button>
         </div>

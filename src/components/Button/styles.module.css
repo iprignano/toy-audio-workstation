@@ -59,3 +59,7 @@
   color: #ff1717;
   background-color: rgba(190, 22, 22, 0.3);
 }
+
+.button svg {
+  fill: currentColor;
+}

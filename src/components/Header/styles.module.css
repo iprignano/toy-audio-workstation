@@ -4,7 +4,7 @@
   height: min-content;
   align-items: center;
   background-color: rgb(23, 23, 23);
-  color: white;
+  color: #b4b4b4;
 }
 
 .logo {
@@ -14,6 +14,9 @@
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--mono-font-family);
   text-transform: uppercase;
   font-weight: 500;
@@ -23,5 +26,15 @@
 
 .button:hover {
   background: black;
-  color: var(--primary-accent-color);
+  color: white;
+}
+
+.button svg {
+  width: 17px;
+  height: 17px;
+  fill: #b4b4b4;
+}
+
+.button:hover svg {
+  fill: white;
 }
