@@ -44,7 +44,12 @@ export default function ShareSongModal(props: { onClose(): void }) {
           <Button variant="alternate" onClick={() => props.onClose()}>
             Cancel
           </Button>
-          <Button type="button" onClick={handleClipboardCopy} icon="copy">
+          <Button
+            type="button"
+            onClick={handleClipboardCopy}
+            icon={hasCopied() ? 'check' : 'copy'}
+            variant={hasCopied() ? 'green' : 'primary'}
+          >
             {hasCopied() ? 'Copied!' : 'Copy to clipboard'}
           </Button>
         </div>
