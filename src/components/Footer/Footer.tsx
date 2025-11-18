@@ -1,4 +1,4 @@
-import { useContext } from 'solid-js';
+import { createEffect, onCleanup, useContext } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import { AppContext } from '../AppContext/AppContext';
@@ -18,6 +18,31 @@ const options = {
 export default function Footer() {
   const context = useContext(AppContext);
 
+  createEffect(() => {
+    const onKeyDown = (evt: KeyboardEvent) => {
+      // Don't intercept the event if there's
+      // a meta key pressed (e.g. ctrl-t, cmd-l, etc)
+      // or if a modal is currently open
+      if (evt.metaKey || context?.isModalOpen()) return;
+      // Don't intercept the event if an input
+      // or button is currently focused
+      if (['INPUT', 'BUTTON', 'TEXTAREA'].includes(document.activeElement?.tagName ?? '')) return;
+
+      if (evt.key === ' ') {
+        context?.setIsPlaying((isPlaying) => !isPlaying);
+      }
+      if (evt.key === ',') {
+        context?.setIsSequencingKeys((isSequencing) => !isSequencing);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    onCleanup(() => {
+      document.removeEventListener('keydown', onKeyDown);
+    });
+  });
+
   return (
     <footer class={`${styles.footer} monospace`}>
       <div class={styles.tempo}>
@@ -27,6 +52,7 @@ export default function Footer() {
         <input
           type="checkbox"
           id="synthSwitch"
+          checked={context?.isSequencingKeys()}
           onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
         />
         <div classList={{ [styles.active]: !context?.isSequencingKeys() }}>
