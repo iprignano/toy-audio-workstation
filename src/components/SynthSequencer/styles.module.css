@@ -32,7 +32,7 @@
   font-size: 12px;
   padding: 2px 10px;
   background-color: #1d1d1d;
-  z-index: 1;
+  z-index: 2;
 }
 
 .noteName span {
@@ -85,7 +85,7 @@
 
 .noteTable div.visible {
   opacity: 1;
-  z-index: 10;
+  z-index: 1;
 }
 
 .noteTable div.visible:hover {
@@ -103,6 +103,8 @@
 }
 
 .noteTable div.visible.resizing {
+  /* Prevents note length flickering
+     when resizing a note */
   z-index: 0;
 }
 
