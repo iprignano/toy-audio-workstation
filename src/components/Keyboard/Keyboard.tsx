@@ -156,11 +156,6 @@ export default function Keyboard() {
 
   return (
     <div class={styles.wrapper}>
-      <div class={`${styles.mobileNotice} monospace`}>
-        The keyboard is not ready for mobile yet.
-        <br />
-        Switch to the sequencer view!
-      </div>
       <div class={`${styles.ctrls} monospace`}>
         <div class={`${styles.logo} grotesk`}>
           <img src="/taw2k.png" alt="TAW2k logo" />

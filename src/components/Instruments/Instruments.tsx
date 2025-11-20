@@ -1,10 +1,15 @@
 import { useAudioSequencing } from '../../lib/useAudioSequencing';
+import { useMobileViewSwitch } from '../../lib/useMobileViewSwitch';
 import DrumsSequencer from '../DrumsSequencer/DrumsSequencer';
 import Synth from '../Synth/Synth';
 
 import styles from './styles.module.css';
 
 export default function Instruments() {
+  // Automatically hides the
+  // keyboard on mobile
+  useMobileViewSwitch();
+
   // This is where all the
   // sound making happens:
   useAudioSequencing();

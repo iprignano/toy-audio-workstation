@@ -10,13 +10,6 @@
   --keys-height: 150px;
 }
 
-.mobileNotice {
-  color: #a5a5a5;
-  font-size: 12px;
-  padding: 20px;
-  text-align: center;
-}
-
 .ctrls,
 .keys {
   display: none;
@@ -208,9 +201,5 @@
   .ctrls,
   .keys {
     display: flex;
-  }
-
-  .mobileNotice {
-    display: none;
   }
 }
