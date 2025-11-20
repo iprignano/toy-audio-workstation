@@ -200,7 +200,8 @@
 }
 
 .highlighted {
-  background-color: var(--primary-accent-color);
+  background: #ffb11f;
+  background: linear-gradient(0deg, #ffb11f 0%, #9c6808 100%);
 }
 
 @media screen and (min-width: 900px) {
