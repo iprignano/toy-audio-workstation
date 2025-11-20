@@ -16,19 +16,22 @@ export default function Header() {
     <header class={styles.header}>
       <div class={styles.logo}>
         <img src="/logo.svg" />
+        <span class="monospace">toy audio workstation</span>
       </div>
-      <button class={styles.button} type="button" onClick={() => setIsSavingSong(true)}>
-        <Save />
-        Save
-      </button>
-      <button class={styles.button} type="button" onClick={() => setIsLoadingSong(true)}>
-        <Load />
-        Load
-      </button>
-      <button class={styles.button} type="button" onClick={() => setIsSharingSong(true)}>
-        <Share />
-        Share
-      </button>
+      <div class={styles.menu}>
+        <button class={styles.button} type="button" onClick={() => setIsSavingSong(true)}>
+          <Save />
+          <span>Save</span>
+        </button>
+        <button class={styles.button} type="button" onClick={() => setIsLoadingSong(true)}>
+          <Load />
+          <span>Load</span>
+        </button>
+        <button class={styles.button} type="button" onClick={() => setIsSharingSong(true)}>
+          <Share />
+          <span>Share</span>
+        </button>
+      </div>
       {isSavingSong() && <SaveSongModal onClose={() => setIsSavingSong(false)} />}
       {isLoadingSong() && <LoadSongModal onClose={() => setIsLoadingSong(false)} />}
       {isSharingSong() && <ShareSongModal onClose={() => setIsSharingSong(false)} />}

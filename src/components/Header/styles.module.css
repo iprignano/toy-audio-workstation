@@ -3,25 +3,45 @@
   width: 100%;
   height: min-content;
   align-items: center;
+  justify-content: space-between;
   background-color: rgb(23, 23, 23);
   color: #b4b4b4;
 }
 
 .logo {
-  display: block;
+  display: flex;
   padding: 5px 15px;
-  width: 95px;
+  align-items: center;
+}
+
+.logo img {
+  width: 65px;
+}
+
+.logo span {
+  font-size: 15px;
+  line-height: 1;
+  padding-left: 12px;
+  white-space: nowrap;
+}
+
+.menu {
+  display: flex;
 }
 
 .button {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 3px;
   font-family: var(--mono-font-family);
   text-transform: uppercase;
   font-weight: 500;
   font-size: 12px;
-  padding: 10px 20px;
+  padding: 10px 15px;
+}
+
+.button span {
+  display: none;
 }
 
 .button:hover {
@@ -37,4 +57,16 @@
 
 .button:hover svg {
   fill: white;
+}
+
+@media screen and (min-width: 500px) {
+  .button {
+    gap: 7px;
+    font-size: 12px;
+    padding: 10px 20px;
+  }
+
+  .button span {
+    display: block;
+  }
 }
