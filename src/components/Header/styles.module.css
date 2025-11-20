@@ -19,6 +19,7 @@
 }
 
 .logo span {
+  display: none;
   font-size: 15px;
   line-height: 1;
   padding-left: 12px;
@@ -67,6 +68,11 @@
   }
 
   .button span {
+    display: block;
+  }
+}
+@media screen and (min-width: 700px) {
+  .logo span {
     display: block;
   }
 }
