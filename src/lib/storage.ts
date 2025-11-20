@@ -61,3 +61,23 @@ export const saveSong = (song: Omit<DeserializedSong, 'created'>) => {
     return false;
   }
 };
+
+export const deleteSong = (song: DeserializedSong) => {
+  try {
+    const savedSongs = getSongStore();
+
+    if (!savedSongs) {
+      return true;
+    }
+
+    const newStorage = {
+      songs: [...savedSongs.filter(({ n, c }) => n !== song.name && c !== song.created)],
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newStorage));
+
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};

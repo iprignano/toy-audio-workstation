@@ -1,15 +1,16 @@
-import { windowed } from 'es-toolkit';
-import { createMemo, createSignal, Match, Switch, useContext } from 'solid-js';
-import { getSavedSongs } from '../../lib/storage';
-import { AppContext } from '../AppContext/AppContext';
-import Modal from '../Modal/Modal';
-import Button from '../Button/Button';
-import styles from './styles.module.css';
+import { createSignal, For, Match, Switch, useContext } from 'solid-js';
+import { deleteSong } from '../../lib/storage';
 import {
   deserializeSong,
   type DeserializedSong,
   type SerializedSong,
 } from '../../lib/songSerialization';
+import { useSongsResource } from '../../lib/useSongsResource';
+import { AppContext } from '../AppContext/AppContext';
+import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
+import { Delete } from '../Icon/Delete';
+import styles from './styles.module.css';
 
 const WINDOW_SIZE = 7;
 
@@ -18,14 +19,10 @@ export default function LoadSongModal(props: { onClose(): void }) {
   const [page, setPage] = createSignal(0);
   const [activeTab, setActiveTab] = createSignal<'savedSongs' | 'loadFromString'>('savedSongs');
   const [hasError, setHasError] = createSignal(false);
+  const [hasDeleteError, setHasDeleteError] = createSignal(false);
   const [hasParsingError, setHasParsingError] = createSignal(false);
   const [selectedSong, setSelectedSong] = createSignal<DeserializedSong | null>(null);
-  const savedSongs = getSavedSongs() || [];
-  const hasSavedSongs = (savedSongs?.length ?? 0) > 0;
-  const windowedSongs = createMemo(() =>
-    windowed(savedSongs, WINDOW_SIZE, WINDOW_SIZE, { partialWindows: true }),
-  );
-  const numberOfPages = Math.ceil(savedSongs.length / WINDOW_SIZE);
+  const { hasSavedSongs, windowedSongs, numberOfPages, refetch } = useSongsResource(WINDOW_SIZE);
   const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'short',
   });
@@ -34,6 +31,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
     setActiveTab(tab);
     setSelectedSong(null);
     setHasError(false);
+    setHasDeleteError(false);
     setHasParsingError(false);
   };
 
@@ -63,6 +61,21 @@ export default function LoadSongModal(props: { onClose(): void }) {
     }
   };
 
+  const handleSongDelete = (song: DeserializedSong) => {
+    setHasDeleteError(false);
+    setSelectedSong(null);
+    const confirmation = confirm(`Do you really want to delete "${song.name}"?`);
+    if (confirmation) {
+      try {
+        deleteSong(song);
+        refetch();
+      } catch (err) {
+        console.error(err);
+        setHasDeleteError(true);
+      }
+    }
+  };
+
   return (
     <Modal onClose={props.onClose}>
       <div class={styles.wrapper}>
@@ -89,23 +102,34 @@ export default function LoadSongModal(props: { onClose(): void }) {
           <div class={styles.tabContent}>
             <Switch>
               <Match when={activeTab() === 'savedSongs'}>
-                {hasSavedSongs ? (
+                {hasSavedSongs() ? (
                   <>
                     <div class={styles.songList}>
-                      {windowedSongs()[page()]?.map((song) => (
-                        <button
-                          type="button"
-                          classList={{
-                            [styles.song]: true,
-                            [styles.selected]: selectedSong()?.name === song.name,
-                          }}
-                          onClick={() => setSelectedSong(song)}
-                        >
-                          <span>[{dateFormatter.format(new Date(song.created))}]</span> {song.name}
-                        </button>
-                      ))}
+                      <For each={windowedSongs()[page()]}>
+                        {(song) => (
+                          <div
+                            classList={{
+                              [styles.song]: true,
+                              [styles.selected]: selectedSong()?.name === song.name,
+                            }}
+                          >
+                            <button type="button" onClick={() => setSelectedSong(song)}>
+                              <span>[{dateFormatter.format(new Date(song.created))}]</span>{' '}
+                              {song.name}
+                            </button>
+                            <button
+                              type="button"
+                              class={styles.delete}
+                              aria-label="Delete"
+                              onClick={() => handleSongDelete(song)}
+                            >
+                              <Delete />
+                            </button>
+                          </div>
+                        )}
+                      </For>
                     </div>
-                    {numberOfPages > 1 && (
+                    {numberOfPages() > 1 && (
                       <div class={styles.pagination}>
                         <button
                           type="button"
@@ -116,7 +140,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
                         </button>
                         <button
                           type="button"
-                          disabled={page() === numberOfPages - 1}
+                          disabled={page() === numberOfPages() - 1}
                           onClick={() => setPage((p) => p + 1)}
                         >
                           Next
@@ -151,6 +175,10 @@ export default function LoadSongModal(props: { onClose(): void }) {
 
         {hasError() && (
           <div class={styles.error}>There was a problem while loading your song. Try later.</div>
+        )}
+
+        {hasDeleteError() && (
+          <div class={styles.error}>There was a problem deleting your song. Try later.</div>
         )}
 
         <div class={styles.actions}>
