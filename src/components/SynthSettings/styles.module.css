@@ -29,6 +29,10 @@
   border-radius: 8px;
 }
 
+.waves:has(:focus-visible) {
+  outline: 1px solid var(--primary-accent-color);
+}
+
 .radioContainer {
   display: flex;
   gap: 10px;
