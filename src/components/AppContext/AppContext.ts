@@ -5,6 +5,7 @@ import type { DeserializedSong } from '../../lib/songSerialization';
 type DrumsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean[]>>;
 type KeysStore = Store<Record<number, { freq: number; length: number }[]>>;
 type InstrumentsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean>>;
+export type DrumKit = 'ecmakit' | 'dnb';
 
 export type AppContextValue = Store<{
   bpm: Accessor<number>;
@@ -19,6 +20,8 @@ export type AppContextValue = Store<{
   setCurrentStep: Setter<number>;
   oscWave: Accessor<OscillatorType>;
   setOscWave: Setter<OscillatorType>;
+  drumKit: Accessor<DrumKit>;
+  setDrumKit: Setter<DrumKit>;
   synthAttack: Accessor<number>;
   setSynthAttack: Setter<number>;
   synthRelease: Accessor<number>;
