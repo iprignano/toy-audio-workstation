@@ -1,11 +1,18 @@
+import { createSignal } from 'solid-js';
 import { useAudioSequencing } from '../../lib/useAudioSequencing';
 import { useMobileViewSwitch } from '../../lib/useMobileViewSwitch';
 import DrumsSequencer from '../DrumsSequencer/DrumsSequencer';
 import Synth from '../Synth/Synth';
+import DrumsSettings from '../DrumsSettings/DrumsSettings';
+import SynthSettings from '../SynthSettings/SynthSettings';
+import { Cog } from '../Icon/Cog';
 
 import styles from './styles.module.css';
 
 export default function Instruments() {
+  const [areDrumsSettingsOpen, setAreDrumsSettingsOpen] = createSignal(false);
+  const [areSynthSettingsOpen, setAreSynthSettingsOpen] = createSignal(false);
+
   // Automatically hides the
   // keyboard on mobile
   useMobileViewSwitch();
@@ -17,14 +24,34 @@ export default function Instruments() {
   return (
     <>
       <div class={`${styles.drums} ${styles.instrument}`}>
-        <div class={styles.title}>
+        <div class={styles.sidebar}>
+          <button
+            type="button"
+            classList={{ [styles.open]: areDrumsSettingsOpen() }}
+            onClick={() => setAreDrumsSettingsOpen((prev) => !prev)}
+          >
+            <Cog fill="white" />
+          </button>
           <span class="monospace">drums</span>
+        </div>
+        <div classList={{ [styles.settingsPanel]: true, [styles.open]: areDrumsSettingsOpen() }}>
+          <DrumsSettings />
         </div>
         <DrumsSequencer />
       </div>
-      <div class={`${styles.keyboard} ${styles.instrument}`}>
-        <div class={styles.title}>
-          <span class="monospace">keyboard</span>
+      <div class={`${styles.synth} ${styles.instrument}`}>
+        <div class={styles.sidebar}>
+          <button
+            type="button"
+            classList={{ [styles.open]: areSynthSettingsOpen() }}
+            onClick={() => setAreSynthSettingsOpen((prev) => !prev)}
+          >
+            <Cog fill="white" />
+          </button>
+          <span class="monospace">synth</span>
+        </div>
+        <div classList={{ [styles.settingsPanel]: true, [styles.open]: areSynthSettingsOpen() }}>
+          <SynthSettings />
         </div>
         <Synth />
       </div>
