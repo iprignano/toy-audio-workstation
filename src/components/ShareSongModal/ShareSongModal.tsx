@@ -3,20 +3,19 @@ import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import styles from './styles.module.css';
-import { serializeSong } from '../../lib/songSerialization';
+import type { SavedSong } from '../../lib/storage';
 
 export default function ShareSongModal(props: { onClose(): void }) {
   const context = useContext(AppContext);
   const [hasCopied, setHasCopied] = createSignal(false);
 
   const shareableSong = createMemo(() => {
-    const song = {
+    const song: Omit<SavedSong, 'id'> = {
       name: 'shared tune',
-      created: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       ...context?.getSong()!,
     };
-    const serializedSong = serializeSong(song);
-    return btoa(JSON.stringify(serializedSong));
+    return btoa(JSON.stringify(song));
   });
 
   const handleClipboardCopy = async () => {

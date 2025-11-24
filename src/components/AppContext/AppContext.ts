@@ -1,6 +1,6 @@
 import { createContext, type Accessor, type Setter } from 'solid-js';
 import type { Store, SetStoreFunction } from 'solid-js/store';
-import type { DeserializedSong } from '../../lib/songSerialization';
+import type { SavedSong } from '../../lib/storage';
 
 export const drumKits = ['toykit', 'rock', 'trap', 'hiphop'] as const;
 
@@ -34,7 +34,7 @@ export type AppContextValue = Store<{
   setKeys: SetStoreFunction<KeysStore>;
   activeInstruments: InstrumentsStore;
   toggleInstrument: SetStoreFunction<InstrumentsStore>;
-  getSong(): Omit<DeserializedSong, 'created' | 'name'>;
+  getSong(): Omit<SavedSong, 'createdAt' | 'name' | 'id'>;
 }>;
 
 export const AppContext = createContext<AppContextValue>();

@@ -1,10 +1,5 @@
 import { createSignal, For, Match, Switch, useContext } from 'solid-js';
-import { deleteSong } from '../../lib/storage';
-import {
-  deserializeSong,
-  type DeserializedSong,
-  type SerializedSong,
-} from '../../lib/songSerialization';
+import { deleteSong, type SavedSong } from '../../lib/storage';
 import { useSongsResource } from '../../lib/useSongsResource';
 import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
@@ -21,7 +16,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
   const [hasError, setHasError] = createSignal(false);
   const [hasDeleteError, setHasDeleteError] = createSignal(false);
   const [hasParsingError, setHasParsingError] = createSignal(false);
-  const [selectedSong, setSelectedSong] = createSignal<DeserializedSong | null>(null);
+  const [selectedSong, setSelectedSong] = createSignal<SavedSong | null>(null);
   const { hasSavedSongs, windowedSongs, numberOfPages, refetch } = useSongsResource(WINDOW_SIZE);
   const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'short',
@@ -38,10 +33,10 @@ export default function LoadSongModal(props: { onClose(): void }) {
   const handleSongLoading = () => {
     setHasError(false);
     try {
-      context?.setBpm(selectedSong()?.bpm as DeserializedSong['bpm']);
-      context?.setOscWave(selectedSong()?.waveType as DeserializedSong['waveType']);
-      context?.setDrums(selectedSong()?.drums as DeserializedSong['drums']);
-      context?.setKeys(selectedSong()?.keys as DeserializedSong['keys']);
+      context?.setBpm(selectedSong()?.bpm as SavedSong['bpm']);
+      context?.setOscWave(selectedSong()?.waveType as SavedSong['waveType']);
+      context?.setDrums(selectedSong()?.drums as SavedSong['drums']);
+      context?.setKeys(selectedSong()?.keys as SavedSong['keys']);
       props.onClose();
     } catch (error) {
       setHasError(true);
@@ -52,16 +47,16 @@ export default function LoadSongModal(props: { onClose(): void }) {
     setHasParsingError(false);
     try {
       const sharedString = evt.target.value;
-      const parsedString = JSON.parse(atob(sharedString)) as SerializedSong;
-      const deserializedSong = deserializeSong(parsedString);
-      setSelectedSong(deserializedSong);
+      const parsedString = JSON.parse(atob(sharedString));
+      const savedSong = parsedString;
+      setSelectedSong(savedSong);
     } catch (err) {
       console.error(err);
       setHasParsingError(true);
     }
   };
 
-  const handleSongDelete = (song: DeserializedSong) => {
+  const handleSongDelete = (song: SavedSong) => {
     setHasDeleteError(false);
     setSelectedSong(null);
     const confirmation = confirm(`Do you really want to delete "${song.name}"?`);

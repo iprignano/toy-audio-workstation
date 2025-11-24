@@ -1,20 +1,30 @@
-import {
-  deserializeSong,
-  serializeSong,
-  type DeserializedSong,
-  type SerializedSong,
-} from './songSerialization';
+import { compress, decompress } from 'lz-string';
+
+export type SavedSong = {
+  id: string;
+  name: string;
+  bpm: number;
+  waveType: OscillatorType;
+  drums: {
+    kick: boolean[];
+    snare: boolean[];
+    hihats: boolean[];
+  };
+  keys: {
+    [step: number]: { freq: number; length: number }[];
+  };
+  createdAt: string;
+};
+type TawStorage = { songs: SavedSong[] };
 
 const STORAGE_KEY = 'taw_v0';
-
-type TawStorage = { songs: SerializedSong[] };
 
 export const getSongStore = () => {
   try {
     const storage = localStorage.getItem(STORAGE_KEY);
     if (storage) {
-      const parsedStorage: TawStorage = JSON.parse(storage);
-
+      const compressedStorage = decompress(storage);
+      const parsedStorage: TawStorage = JSON.parse(compressedStorage);
       return parsedStorage.songs;
     }
     return null;
@@ -26,36 +36,33 @@ export const getSongStore = () => {
 
 export const getSavedSongs = () => {
   try {
-    const songStorage = getSongStore();
-    if (songStorage) return songStorage.map(deserializeSong);
-    return null;
+    return getSongStore();
   } catch (err) {
     console.error(err);
     return null;
   }
 };
 
-export const saveSong = (song: Omit<DeserializedSong, 'created'>) => {
+export const saveSong = (song: Omit<SavedSong, 'createdAt' | 'id'>) => {
   try {
     const savedSongs = getSongStore();
 
-    const plainSong: DeserializedSong = JSON.parse(
+    const newSong: SavedSong = JSON.parse(
       JSON.stringify({
         ...song,
         createdAt: new Date().toISOString(),
         id: crypto.randomUUID(),
       }),
     );
-    const newSong = serializeSong(plainSong);
 
     if (!savedSongs) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ songs: [newSong] }));
+      const compressedStorage = compress(JSON.stringify({ songs: [newSong] }));
+      localStorage.setItem(STORAGE_KEY, compressedStorage);
       return true;
     }
 
-    const newStorage = { songs: [...savedSongs, newSong] };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newStorage));
-
+    const compressedStorage = compress(JSON.stringify({ songs: [...savedSongs, newSong] }));
+    localStorage.setItem(STORAGE_KEY, compressedStorage);
     return true;
   } catch (err) {
     console.error(err);
@@ -63,7 +70,7 @@ export const saveSong = (song: Omit<DeserializedSong, 'created'>) => {
   }
 };
 
-export const deleteSong = (song: DeserializedSong) => {
+export const deleteSong = (song: SavedSong) => {
   try {
     const savedSongs = getSongStore();
 
@@ -71,10 +78,12 @@ export const deleteSong = (song: DeserializedSong) => {
       return true;
     }
 
-    const newStorage = {
-      songs: [...savedSongs.filter(({ id }) => id !== song.id)],
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newStorage));
+    const compressedStorage = compress(
+      JSON.stringify({
+        songs: [...savedSongs.filter(({ id }) => id !== song.id)],
+      }),
+    );
+    localStorage.setItem(STORAGE_KEY, compressedStorage);
 
     return true;
   } catch (err) {
