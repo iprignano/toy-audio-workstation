@@ -3,6 +3,7 @@ import { createSignal, type JSXElement } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { AppContext, type AppContextValue, type DrumKit } from './AppContext';
+import type { SavedSong } from '../../lib/storage';
 
 const STEPS_LENGHT = 32;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
@@ -42,15 +43,18 @@ export default function AppContextProvider(props: {
   const [keys, setKeys] = createStore(initialKeysStore);
   const [activeInstruments, toggleInstrument] = createStore(initialInstrumentsStore);
 
-  const getSong = () => {
+  const getSong = (): Omit<SavedSong, 'createdAt' | 'name' | 'id'> => {
     // Spicy conversion to turn the Solid proxies
     // back into plain JavaScript objects
     return JSON.parse(
       JSON.stringify({
         bpm: bpm(),
         waveType: oscWave(),
+        drumKit: drumKit(),
         drums: drums,
         keys: keys,
+        keysAttack: synthAttack(),
+        keysRelease: synthRelease(),
       }),
     );
   };

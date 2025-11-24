@@ -35,8 +35,11 @@ export default function LoadSongModal(props: { onClose(): void }) {
     try {
       context?.setBpm(selectedSong()?.bpm as SavedSong['bpm']);
       context?.setOscWave(selectedSong()?.waveType as SavedSong['waveType']);
+      context?.setDrumKit(selectedSong()?.drumKit as SavedSong['drumKit']);
       context?.setDrums(selectedSong()?.drums as SavedSong['drums']);
       context?.setKeys(selectedSong()?.keys as SavedSong['keys']);
+      context?.setSynthAttack(selectedSong()?.keysAttack as SavedSong['keysAttack']);
+      context?.setSynthRelease(selectedSong()?.keysRelease as SavedSong['keysRelease']);
       props.onClose();
     } catch (error) {
       setHasError(true);
