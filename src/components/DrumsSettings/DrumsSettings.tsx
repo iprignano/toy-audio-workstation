@@ -3,7 +3,7 @@ import { AppContext, drumKits, type DrumKit } from '../AppContext/AppContext';
 import styles from './styles.module.css';
 
 export default function DrumsSettings() {
-  const context = useContext(AppContext);
+  const context = useContext(AppContext)!;
 
   return (
     <div class={styles.wrapper}>
@@ -15,7 +15,7 @@ export default function DrumsSettings() {
               <div
                 classList={{
                   [styles.radioContainer]: true,
-                  [styles.isSelected]: context?.drumKit() === kit,
+                  [styles.isSelected]: context.drumKit() === kit,
                 }}
               >
                 <input
@@ -24,8 +24,8 @@ export default function DrumsSettings() {
                   name="drumKit"
                   value={kit}
                   id={kit}
-                  checked={context?.drumKit() === kit}
-                  onChange={(evt) => context?.setDrumKit(evt.target.value as DrumKit)}
+                  checked={context.drumKit() === kit}
+                  onChange={(evt) => context.setDrumKit(evt.target.value as DrumKit)}
                 />
                 <label for={kit}>{kit}</label>
               </div>

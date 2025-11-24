@@ -4,8 +4,12 @@ import type { SavedSong } from '../../lib/storage';
 
 export const drumKits = ['toykit', 'rock', 'trap', 'hiphop'] as const;
 
-type DrumsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean[]>>;
-type KeysStore = Store<Record<number, { freq: number; length: number }[]>>;
+export type DrumsStore = Store<{
+  [sequence: number]: Record<'kick' | 'snare' | 'hihats', boolean[]>;
+}>;
+export type KeysStore = Store<{
+  [sequence: number]: Record<number, { freq: number; length: number }[]>;
+}>;
 type InstrumentsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean>>;
 export type DrumKit = (typeof drumKits)[number];
 
@@ -28,6 +32,10 @@ export type AppContextValue = Store<{
   setSynthAttack: Setter<number>;
   synthRelease: Accessor<number>;
   setSynthRelease: Setter<number>;
+  drumSequenceIndex: Accessor<number>;
+  setDrumSequenceIndex: Setter<number>;
+  synthSequenceIndex: Accessor<number>;
+  setSynthSequenceIndex: Setter<number>;
   drums: DrumsStore;
   setDrums: SetStoreFunction<DrumsStore>;
   keys: KeysStore;

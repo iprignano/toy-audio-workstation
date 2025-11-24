@@ -22,10 +22,10 @@ const instrumentIcons = {
 };
 
 export default function DrumsSequencer() {
-  const context = useContext(AppContext);
+  const context = useContext(AppContext)!;
 
   const onStepToggle: OnStepToggle = (instrument, step, isChecked) => {
-    context?.setDrums(instrument, step - 1, isChecked);
+    context.setDrums(context.drumSequenceIndex(), instrument, step - 1, isChecked);
   };
 
   const isHiglighted = (
@@ -45,7 +45,7 @@ export default function DrumsSequencer() {
         <div
           classList={{
             [styles.step]: true,
-            [styles.activeStep]: isHiglighted(context?.isPlaying(), step, context?.currentStep()),
+            [styles.activeStep]: isHiglighted(context.isPlaying(), step, context.currentStep()),
           }}
         >
           {step}
@@ -59,7 +59,7 @@ export default function DrumsSequencer() {
               [styles.active]: context?.activeInstruments[instrument],
             }}
           >
-            <button onClick={() => context?.toggleInstrument(instrument, (active) => !active)}>
+            <button onClick={() => context.toggleInstrument(instrument, (active) => !active)}>
               <Dynamic component={instrumentIcons[instrument]} fill={'white'} />
             </button>
           </div>
@@ -75,7 +75,7 @@ export default function DrumsSequencer() {
             >
               <input
                 type="checkbox"
-                checked={context?.drums?.[instrument][step]}
+                checked={context.drums[context.drumSequenceIndex()][instrument][step]}
                 onChange={(evt) => {
                   evt.preventDefault();
                   onStepToggle(instrument, step + 1, evt.target.checked);

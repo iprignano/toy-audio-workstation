@@ -34,19 +34,26 @@ export const useNotesDragEvents = () => {
     } else {
       // If the user was dragging a note, remove it from the sequence
       if (draggedNote()) {
-        context.setKeys(draggedNote()!.step, (n) =>
+        context.setKeys(context.synthSequenceIndex(), draggedNote()!.step, (n) =>
           n.filter(({ freq: f }) => f !== draggedNote()!.freq),
         );
       }
 
       // Toggle target note on/off
-      if (context.keys[step].find((n) => n.freq === freq)) {
-        context.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
+      if (context.keys[context.synthSequenceIndex()][step].find((n) => n.freq === freq)) {
+        context.setKeys(context.synthSequenceIndex(), step, (n) =>
+          n.filter(({ freq: f }) => f !== freq),
+        );
       } else {
-        context.setKeys(step, context.keys[step].length, {
-          freq,
-          length: draggedNote()?.length || 1,
-        });
+        context.setKeys(
+          context.synthSequenceIndex(),
+          step,
+          context.keys[context.synthSequenceIndex()][step].length,
+          {
+            freq,
+            length: draggedNote()?.length || 1,
+          },
+        );
       }
 
       setClickedNote(null);
@@ -64,10 +71,15 @@ export const useNotesDragEvents = () => {
       if (noteProps.step < (draggedNote()!.step ?? 0)) return;
 
       // Set the note length
-      context.setKeys(draggedNote()!.step, (note) => note?.freq === draggedNote()?.freq, {
-        freq: draggedNote()?.freq,
-        length: Math.max(1, noteProps.step + 1 - (draggedNote()?.step ?? 0)),
-      });
+      context.setKeys(
+        context.synthSequenceIndex(),
+        draggedNote()!.step,
+        (note) => note?.freq === draggedNote()?.freq,
+        {
+          freq: draggedNote()?.freq,
+          length: Math.max(1, noteProps.step + 1 - (draggedNote()?.step ?? 0)),
+        },
+      );
     } else {
       // The user is dragging a note
       // to a different cell

@@ -49,7 +49,9 @@ export default function SynthSequencer() {
                 <Index each={STEPS_ARRAY}>
                   {(step) => {
                     const noteInSlot = createMemo(() =>
-                      context.keys[step()].find((n) => n?.freq === note().freq),
+                      context.keys[context.synthSequenceIndex()][step()].find(
+                        (n) => n?.freq === note().freq,
+                      ),
                     );
                     const isDragHoveredNote = createMemo(
                       () =>
