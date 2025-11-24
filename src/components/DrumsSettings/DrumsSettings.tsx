@@ -1,8 +1,6 @@
 import { useContext } from 'solid-js';
-import { AppContext, type DrumKit } from '../AppContext/AppContext';
+import { AppContext, drumKits, type DrumKit } from '../AppContext/AppContext';
 import styles from './styles.module.css';
-
-const kits: DrumKit[] = ['ecmakit', 'dnb'];
 
 export default function DrumsSettings() {
   const context = useContext(AppContext);
@@ -13,7 +11,7 @@ export default function DrumsSettings() {
         <h3 class={styles.optionTitle}>drum kit</h3>
         <fieldset>
           <div class={styles.kits}>
-            {kits.map((kit) => (
+            {drumKits.map((kit) => (
               <div
                 classList={{
                   [styles.radioContainer]: true,
@@ -26,6 +24,7 @@ export default function DrumsSettings() {
                   name="drumKit"
                   value={kit}
                   id={kit}
+                  checked={context?.drumKit() === kit}
                   onChange={(evt) => context?.setDrumKit(evt.target.value as DrumKit)}
                 />
                 <label for={kit}>{kit}</label>

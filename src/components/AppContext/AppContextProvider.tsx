@@ -15,7 +15,7 @@ export default function AppContextProvider(props: {
 }) {
   const [bpm, setBpm] = createSignal(120);
   const [oscWave, setOscWave] = createSignal<OscillatorType>('sine');
-  const [drumKit, setDrumKit] = createSignal<DrumKit>('ecmakit');
+  const [drumKit, setDrumKit] = createSignal<DrumKit>('toykit');
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentStep, setCurrentStep] = createSignal(0);
   const [synthAttack, setSynthAttack] = createSignal(0.1);

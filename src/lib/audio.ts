@@ -1,12 +1,45 @@
+import type { SampleBufferTuple, SampledDrumKitName } from './useSamplesResource';
+import { hihats, kick, snare } from './toyDrumKit';
+import { type DrumKit } from '../components/AppContext/AppContext';
+
+type SampleBuffers = Record<
+  SampledDrumKitName,
+  {
+    kick: AudioBuffer;
+    snare: AudioBuffer;
+    hihat: AudioBuffer;
+  }
+>;
+
 let audioContext: AudioContext;
 let compressor: DynamicsCompressorNode;
-let noiseBufferNode: AudioBuffer;
+let sampleAudioBuffers: SampleBuffers;
 
 const getAudioContext = () => {
   if (typeof audioContext !== 'undefined') return audioContext;
 
   audioContext = new AudioContext();
   return audioContext;
+};
+
+export const setupSamples = async (samples: SampleBufferTuple[]) => {
+  const audioCtx = getAudioContext();
+
+  const audioBuffers = samples.reduce(async (acc, [sampleName, arrayBuffer]) => {
+    const [kitName, sample] = sampleName.split('_') as [
+      SampledDrumKitName,
+      keyof SampleBuffers[SampledDrumKitName],
+    ];
+
+    const sampleBuffers = await acc;
+
+    sampleBuffers[kitName] ||= {} as SampleBuffers[SampledDrumKitName];
+    sampleBuffers[kitName][sample] = await audioCtx.decodeAudioData(arrayBuffer);
+
+    return sampleBuffers;
+  }, Promise.resolve({} as SampleBuffers));
+
+  sampleAudioBuffers = await audioBuffers;
 };
 
 const getCompressorNode = (): DynamicsCompressorNode => {
@@ -30,120 +63,55 @@ const getDestinationNode = () => {
   return getCompressorNode();
 };
 
-const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) => {
-  const audioCtx = getAudioContext();
-  return new BiquadFilterNode(audioCtx, {
-    type,
-    frequency,
-    Q,
-  });
-};
-
-const getNoiseAudioNode = () => {
-  const audioCtx = getAudioContext();
-  const bufferSize = audioCtx.sampleRate;
-  let noiseBuffer;
-
-  if (noiseBufferNode) {
-    noiseBuffer = noiseBufferNode;
-  } else {
-    // create an empty buffer
-    const noiseBuffer = new AudioBuffer({
-      length: bufferSize,
-      sampleRate: audioCtx.sampleRate,
-    });
-
-    // fill the buffer with noise
-    const data = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
-    }
-
-    noiseBufferNode = noiseBuffer;
-  }
-
-  return new AudioBufferSourceNode(audioCtx, {
-    buffer: noiseBuffer,
-  });
-};
-
 // ================
 // Drums
 // ================
-
-// Kick - low freq sine wave
-const playKick = (time: number) => {
+const playKick = (time: number, drumKit: DrumKit) => {
   const audioCtx = getAudioContext();
   const destination = getDestinationNode();
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
 
-  osc.connect(gain);
-  gain.connect(destination);
-
-  osc.frequency.value = 150;
-  osc.frequency.setValueAtTime(150, time);
-
-  gain.gain.setValueAtTime(0.5, time);
-  osc.frequency.exponentialRampToValueAtTime(0.001, time + 1);
-  gain.gain.exponentialRampToValueAtTime(0.001, time + 1);
-
-  osc.start(time);
-  osc.stop(time + 1);
+  if (drumKit === 'toykit') {
+    kick({ audioCtx, time, destination });
+  } else {
+    const sample = new AudioBufferSourceNode(audioContext, {
+      buffer: sampleAudioBuffers[drumKit]['kick'],
+      playbackRate: 1,
+    });
+    sample.connect(destination);
+    sample.start(time);
+  }
 };
 
-// Snare - high freq sine wave + short high-passed noise
-const playSnare = (time: number) => {
+const playSnare = (time: number, drumKit: DrumKit) => {
   const audioCtx = getAudioContext();
-  const osc = audioCtx.createOscillator();
   const destination = getDestinationNode();
 
-  const oscGain = audioCtx.createGain();
-  const oscHighPass = getFilterNode('highpass', 700);
-
-  osc.connect(oscHighPass).connect(oscGain);
-  oscGain.connect(destination);
-
-  osc.frequency.value = 850;
-  osc.frequency.setValueAtTime(850, time);
-  osc.frequency.exponentialRampToValueAtTime(550, time + 0.01);
-  oscGain.gain.setValueAtTime(0.4, time);
-  oscGain.gain.exponentialRampToValueAtTime(0.5, time + 0.05);
-  oscGain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
-
-  osc.start(time);
-  osc.stop(time + 0.2);
-
-  const noise = getNoiseAudioNode();
-  const noiseHighPass = getFilterNode('lowpass', 8000);
-  const noiseGain = audioCtx.createGain();
-
-  noise.connect(noiseHighPass).connect(noiseGain);
-  noiseGain.connect(destination);
-  noiseGain.gain.setValueAtTime(0.2, time);
-  noiseGain.gain.exponentialRampToValueAtTime(0.2, time + 0.05);
-  noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-
-  noise.start(time);
-  noise.stop(time + 0.1);
+  if (drumKit === 'toykit') {
+    snare({ audioCtx, time, destination });
+  } else {
+    const sample = new AudioBufferSourceNode(audioContext, {
+      buffer: sampleAudioBuffers[drumKit]['snare'],
+      playbackRate: 1,
+    });
+    sample.connect(audioCtx.destination);
+    sample.start(time);
+  }
 };
 
-// Hihats - high-passed short noise
-const playHihats = (time: number) => {
+const playHihats = (time: number, drumKit: DrumKit) => {
   const audioCtx = getAudioContext();
   const destination = getDestinationNode();
-  const noise = getNoiseAudioNode();
 
-  const highPass = getFilterNode('highpass', 6000);
-  const noiseGain = audioCtx.createGain();
-
-  noise.connect(highPass).connect(noiseGain);
-  noiseGain.connect(destination);
-  noiseGain.gain.setValueAtTime(0.5, time);
-  noiseGain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
-
-  noise.start(time);
-  noise.stop(time + 0.2);
+  if (drumKit === 'toykit') {
+    hihats({ audioCtx, time, destination });
+  } else {
+    const sample = new AudioBufferSourceNode(audioContext, {
+      buffer: sampleAudioBuffers[drumKit]['hihat'],
+      playbackRate: 1,
+    });
+    sample.connect(audioCtx.destination);
+    sample.start(time);
+  }
 };
 
 // ================

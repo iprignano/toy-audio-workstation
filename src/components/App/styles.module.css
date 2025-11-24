@@ -9,3 +9,17 @@
   overflow-x: scroll;
   place-content: center;
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background-color: #202020;
+}
+
+.loading img {
+  width: 100px;
+}
