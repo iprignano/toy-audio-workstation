@@ -1,40 +1,9 @@
-import { fill } from 'es-toolkit';
 import { createSignal, type JSXElement } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import {
-  AppContext,
-  type AppContextValue,
-  type DrumKit,
-  type DrumsStore,
-  type KeysStore,
-} from './AppContext';
+import { AppContext, type AppContextValue, type DrumKit } from './AppContext';
+import { initialDrumsStore, initialInstrumentsStore, initialKeysStore } from './initialStoreValues';
 import type { SavedSong } from '../../lib/storage';
-
-const STEPS_LENGHT = 32;
-const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
-
-const initialDrumsStore = () => {
-  const drumsStore: DrumsStore = {};
-  for (let i = 0; i <= 3; i++) {
-    drumsStore[i] = {
-      kick: fill(Array(16), false),
-      snare: fill(Array(16), false),
-      hihats: fill(Array(16), false),
-    };
-  }
-  return drumsStore;
-};
-
-const initialKeysStore = () => {
-  return STEPS_ARRAY.reduce((acc, val) => {
-    for (let i = 0; i <= 3; i++) {
-      acc[i] ||= {};
-      acc[i][val] = [];
-    }
-    return acc;
-  }, {} as KeysStore);
-};
 
 export default function AppContextProvider(props: {
   value?: AppContextValue;
@@ -52,15 +21,9 @@ export default function AppContextProvider(props: {
   const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
   const [isModalOpen, setIsModalOpen] = createSignal(false);
 
-  const initialInstrumentsStore = {
-    kick: true,
-    snare: true,
-    hihats: true,
-  };
-
   const [drums, setDrums] = createStore(initialDrumsStore());
   const [keys, setKeys] = createStore(initialKeysStore());
-  const [activeInstruments, toggleInstrument] = createStore(initialInstrumentsStore);
+  const [activeInstruments, toggleInstrument] = createStore(initialInstrumentsStore());
 
   const getSong = (): Omit<SavedSong, 'createdAt' | 'name' | 'id'> => {
     // Spicy conversion to turn the Solid proxies
