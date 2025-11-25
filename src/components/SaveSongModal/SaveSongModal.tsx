@@ -74,7 +74,7 @@ export default function SaveSongModal(props: { onClose(): void }) {
           )}
 
           <div class={styles.actions}>
-            <Button variant="alternate" onClick={() => props.onClose()}>
+            <Button type="button" variant="alternate" onClick={() => props.onClose()}>
               Cancel
             </Button>
             <Button
