@@ -20,7 +20,7 @@ export const noteRegistry = (() => {
   // for each octave loop
   let notes = [...firstOctave];
   let previousOctave = firstOctave;
-  for (let oct = 1; oct < 5; oct++) {
+  for (let oct = 1; oct < 6; oct++) {
     previousOctave = previousOctave.map(({ octave, note, freq }) => ({
       octave: octave + 1,
       note,
