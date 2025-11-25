@@ -1,11 +1,10 @@
 .footer {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   align-items: stretch;
   padding: 10px;
   width: 100%;
-  height: min-content;
-  background-color: rgb(51, 51, 51);
+  background-color: #333333;
   color: white;
   align-self: end;
   border-top: 1px solid #444444;
@@ -61,6 +60,7 @@
   display: none;
   align-items: center;
   justify-content: space-around;
+  margin: 0 auto;
   width: 100px;
   border: 1px solid #434343;
   border-radius: var(--border-radius);
@@ -129,20 +129,43 @@
   transform: translateX(100%);
 }
 
+.playButtons {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  justify-self: flex-end;
+}
+
+.stopButton,
 .playToggle {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  min-width: 120px;
   border-radius: var(--border-radius);
   text-align: center;
-  font-size: 14px;
-  background: #171717;
-  color: var(--primary-accent-color);
+  font-family: var(--mono-font-family);
   font-weight: 500;
   text-transform: uppercase;
   transition: 200ms background cubic-bezier(0.22, 0.73, 0.27, 1);
+}
+
+.stopButton {
+  gap: 10px;
+  text-transform: uppercase;
+  background-color: #960000;
+  color: #d1d1d1;
+}
+
+.stopButton:hover {
+  background-color: #b20000;
+  color: white;
+}
+
+.playToggle {
+  min-width: 120px;
+  background: #171717;
+  color: var(--primary-accent-color);
 }
 
 .playToggle.isPlaying {
@@ -156,9 +179,10 @@
   transition: 80ms background cubic-bezier(0.22, 0.73, 0.27, 1);
 }
 
-.playToggle svg {
+.playToggle svg,
+.stopButton svg {
   fill: currentColor;
-  margin-right: -10px;
+  flex-shrink: 0;
 }
 
 .playToggle:focus-visible {
@@ -176,17 +200,24 @@
   .tempo input {
     width: 60px;
   }
-  .playToggle {
-    min-width: 160px;
+  .playToggle,
+  .stopButton {
     gap: 10px;
     padding: 5px 15px;
   }
-  .playToggle svg {
+  .playToggle svg,
+  .stopButton svg {
     width: 20px;
+  }
+  .playToggle {
+    min-width: 160px;
   }
 }
 
 @media screen and (min-width: 900px) {
+  .footer {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .synthSwitch {
     display: flex;
   }

@@ -9,6 +9,7 @@ import { Grid } from '../Icon/Grid';
 import BpmInput from './BpmInput';
 
 import styles from './styles.module.css';
+import { Stop } from '../Icon/Stop';
 
 const options = {
   play: Play,
@@ -16,23 +17,23 @@ const options = {
 };
 
 export default function Footer() {
-  const context = useContext(AppContext);
+  const context = useContext(AppContext)!;
 
   createEffect(() => {
     const onKeyDown = (evt: KeyboardEvent) => {
       // Don't intercept the event if there's
       // a meta key pressed (e.g. ctrl-t, cmd-l, etc)
       // or if a modal is currently open
-      if (evt.metaKey || context?.isModalOpen()) return;
+      if (evt.metaKey || context.isModalOpen()) return;
       // Don't intercept the event if an input
       // or button is currently focused
       if (['INPUT', 'BUTTON', 'TEXTAREA'].includes(document.activeElement?.tagName ?? '')) return;
 
       if (evt.key === ' ') {
-        context?.setIsPlaying((isPlaying) => !isPlaying);
+        context.setIsPlaying((isPlaying) => !isPlaying);
       }
       if (evt.key === ',') {
-        context?.setIsSequencingKeys((isSequencing) => !isSequencing);
+        context.setIsSequencingKeys((isSequencing) => !isSequencing);
       }
     };
 
@@ -51,24 +52,42 @@ export default function Footer() {
         <input
           type="checkbox"
           id="synthSwitch"
-          checked={context?.isSequencingKeys()}
-          onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
+          checked={context.isSequencingKeys()}
+          onChange={(evt) => context.setIsSequencingKeys(evt.target.checked)}
         />
-        <div classList={{ [styles.isActive]: context?.isSequencingKeys() }}>
+        <div classList={{ [styles.isActive]: context.isSequencingKeys() }}>
           <Grid />
         </div>
-        <div classList={{ [styles.isActive]: !context?.isSequencingKeys() }}>
+        <div classList={{ [styles.isActive]: !context.isSequencingKeys() }}>
           <Keys />
         </div>
       </div>
-      <button
-        type="button"
-        class={`${styles.playToggle} ${context?.isPlaying() ? styles.isPlaying : ''} monospace`}
-        onClick={() => context?.setIsPlaying((isPlaying) => !isPlaying)}
-      >
-        {context?.isPlaying() ? 'Pause' : 'Play'}
-        <Dynamic component={options[context?.isPlaying() ? 'pause' : 'play']} fill="black" />
-      </button>
+      <div class={styles.playButtons}>
+        <button
+          type="button"
+          class={styles.stopButton}
+          onClick={() => {
+            if (!context.isPlaying()) {
+              context.setDrumSequenceIndex(0);
+              context.setSynthSequenceIndex(0);
+            }
+
+            context.setIsPlaying(false);
+            context.setCurrentStep(0);
+          }}
+        >
+          Stop
+          <Stop />
+        </button>
+        <button
+          type="button"
+          class={`${styles.playToggle} ${context.isPlaying() ? styles.isPlaying : ''} monospace`}
+          onClick={() => context.setIsPlaying((isPlaying) => !isPlaying)}
+        >
+          {context.isPlaying() ? 'Pause' : 'Play'}
+          <Dynamic component={options[context.isPlaying() ? 'pause' : 'play']} fill="black" />
+        </button>
+      </div>
     </footer>
   );
 }
