@@ -18,7 +18,7 @@ export default function AppContextProvider(props: {
   const [currentStep, setCurrentStep] = createSignal(0);
   const [synthAttack, setSynthAttack] = createSignal(0.1);
   const [synthRelease, setSynthRelease] = createSignal(0.1);
-  const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
+  const [isSequencingKeys, setIsSequencingKeys] = createSignal(true);
   const [isModalOpen, setIsModalOpen] = createSignal(false);
 
   const [drums, setDrums] = createStore(initialDrumsStore());

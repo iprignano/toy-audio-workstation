@@ -129,9 +129,13 @@
   display: block;
   content: '';
   position: absolute;
-  transform: translateX(100%);
+  transform: translateX(0%);
   width: 50%;
   height: 100%;
+}
+
+.synthSwitch:has(input:not(:checked))::after {
+  transform: translateX(100%);
 }
 
 .playToggle {
