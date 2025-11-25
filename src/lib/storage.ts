@@ -1,5 +1,5 @@
 import { compress, decompress } from 'lz-string';
-import type { DrumKit } from '../components/AppContext/AppContext';
+import type { DrumKit, DrumsStore, KeysStore } from '../components/AppContext/AppContext';
 
 export type SavedSong = {
   id: string;
@@ -7,14 +7,8 @@ export type SavedSong = {
   bpm: number;
   waveType: OscillatorType;
   drumKit: DrumKit;
-  drums: {
-    kick: boolean[];
-    snare: boolean[];
-    hihats: boolean[];
-  };
-  keys: {
-    [step: number]: { freq: number; length: number }[];
-  };
+  drums: DrumsStore;
+  keys: KeysStore;
   keysAttack: number;
   keysRelease: number;
   createdAt: string;
