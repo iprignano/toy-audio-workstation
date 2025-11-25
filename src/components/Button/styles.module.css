@@ -4,10 +4,10 @@
   align-items: center;
   font-family: var(--mono-font-family);
   font-weight: 600;
-  border-radius: 5px;
+  border-radius: 40px;
   border: 2px solid;
   padding: 8px 20px;
-  font-size: 15px;
+  font-size: 13px;
   text-transform: uppercase;
   transition: background-color 150ms ease;
 
@@ -67,5 +67,6 @@
 }
 
 .button svg {
+  width: 19px;
   fill: currentColor;
 }

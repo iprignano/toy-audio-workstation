@@ -50,7 +50,6 @@
 
 .songList span {
   color: #686868;
-  letter-spacing: -1px;
 }
 
 .song {
@@ -67,6 +66,7 @@
 }
 
 .song button:not(.delete) {
+  font-size: 15px;
   padding: 10px 15px;
   padding-right: 40px;
   width: 100%;

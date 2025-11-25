@@ -49,11 +49,12 @@
 .tempo input {
   width: 55px;
   appearance: none;
-  padding: 0 10px;
+  padding: 0 5px;
   background: #202020;
   color: #bcbcbc;
   border: none;
   text-align: center;
+  font-size: 14px;
 }
 
 .synthSwitch {
@@ -136,7 +137,7 @@
   min-width: 120px;
   border-radius: var(--border-radius);
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   background: #171717;
   color: var(--primary-accent-color);
   font-weight: 500;
@@ -181,7 +182,7 @@
     padding: 5px 15px;
   }
   .playToggle svg {
-    width: auto;
+    width: 20px;
   }
 }
 
