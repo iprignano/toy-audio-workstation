@@ -12,9 +12,6 @@ export default function BpmInput() {
 
   return (
     <>
-      <label for="bpm" id="bpmLabel" class={styles.bpm}>
-        BPM
-      </label>
       <button
         aria-label="Decrease BPM"
         disabled={context?.bpm() === minBpm}

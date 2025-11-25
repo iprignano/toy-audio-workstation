@@ -54,10 +54,10 @@ export default function Footer() {
           checked={context?.isSequencingKeys()}
           onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
         />
-        <div classList={{ [styles.active]: context?.isSequencingKeys() }}>
+        <div classList={{ [styles.isActive]: context?.isSequencingKeys() }}>
           <Grid />
         </div>
-        <div classList={{ [styles.active]: !context?.isSequencingKeys() }}>
+        <div classList={{ [styles.isActive]: !context?.isSequencingKeys() }}>
           <Keys />
         </div>
       </div>

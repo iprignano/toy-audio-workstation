@@ -9,11 +9,35 @@ export function Keys() {
       xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="111" height="301" rx="10"></rect>
-        <rect id="Rectangle" fill="#FFFFFF" x="125" y="0" width="111" height="301" rx="10"></rect>
-        <rect id="Rectangle" fill="#FFFFFF" x="250" y="0" width="111" height="301" rx="10"></rect>
-        <rect id="Rectangle" fill="#000000" x="85" y="0" width="65" height="194" rx="8"></rect>
-        <rect id="Rectangle" fill="#000000" x="211" y="0" width="65" height="194" rx="8"></rect>
+        <rect
+          id="Rectangle"
+          fill="currentColor"
+          x="0"
+          y="0"
+          width="111"
+          height="301"
+          rx="10"
+        ></rect>
+        <rect
+          id="Rectangle"
+          fill="currentColor"
+          x="125"
+          y="0"
+          width="111"
+          height="301"
+          rx="10"
+        ></rect>
+        <rect
+          id="Rectangle"
+          fill="currentColor"
+          x="250"
+          y="0"
+          width="111"
+          height="301"
+          rx="10"
+        ></rect>
+        <rect id="Rectangle" fill="#171717" x="85" y="0" width="65" height="194" rx="8"></rect>
+        <rect id="Rectangle" fill="#171717" x="211" y="0" width="65" height="194" rx="8"></rect>
       </g>
     </svg>
   );

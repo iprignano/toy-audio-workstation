@@ -1,7 +1,7 @@
 .footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   padding: 10px;
   width: 100%;
   height: min-content;
@@ -10,34 +10,20 @@
   align-self: end;
   border-top: 1px solid #444444;
 
-  --border-radius: 5px;
+  --border-radius: 45px;
 }
 
 .tempo {
   display: flex;
   align-items: stretch;
   position: relative;
-  margin-left: 10px;
-}
-
-.tempo label {
-  display: none;
-  position: absolute;
-  top: 14px;
-  left: 0px;
-  transform: rotate(-90deg);
-  align-self: center;
-  height: min-content;
-  font-size: 11px;
-  letter-spacing: 3px;
-  opacity: 0.4;
 }
 
 .tempo button {
   font-size: 20px;
   padding: 5px 8px;
-  background-color: rgb(70, 70, 70);
-  color: rgb(152, 152, 152);
+  background-color: #464646;
+  color: #989898;
   transition: background-color 100ms ease;
 }
 
@@ -51,19 +37,19 @@
 }
 
 .minus {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
 }
 
 .plus {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .tempo input {
   width: 55px;
   appearance: none;
-  padding: 5px 10px;
+  padding: 0 10px;
   background: #202020;
   color: #bcbcbc;
   border: none;
@@ -75,11 +61,10 @@
   align-items: center;
   justify-content: space-around;
   width: 100px;
-  height: 45px;
-  background-color: rgb(23, 23, 23);
+  border: 1px solid #434343;
   border-radius: var(--border-radius);
   position: relative;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .synthSwitch div {
@@ -87,12 +72,18 @@
   transition: opacity 200ms cubic-bezier(0.22, 0.73, 0.27, 1);
 }
 
-.synthSwitch:hover div:not(.active) {
+.synthSwitch:hover div:not(.isActive) {
   opacity: 0.5;
 }
 
-.synthSwitch .active {
+.synthSwitch .isActive {
   opacity: 1;
+  color: white;
+}
+
+.synthSwitch svg {
+  width: 20px;
+  fill: currentColor;
 }
 
 .synthSwitch input {
@@ -122,7 +113,6 @@
   border: 2px solid var(--primary-accent-color);
   border-radius: var(--border-radius);
   transition: all 200ms cubic-bezier(0.22, 0.73, 0.27, 1);
-  box-shadow: inset 0 0 5px rgba(209, 178, 0, 0.3);
 }
 
 .synthSwitch:has(input:checked)::after {
@@ -176,26 +166,19 @@
 
 @media screen and (min-width: 760px) {
   .footer {
-    padding: 10px 20px;
-  }
-  .tempo {
-    padding-left: 30px;
+    padding: 10px 15px;
   }
   .tempo button {
     font-size: 18px;
     padding: 5px 10px;
   }
-  .tempo label {
-    display: block;
-  }
   .tempo input {
-    width: 70px;
-    padding: 10px 15px;
+    width: 60px;
   }
   .playToggle {
     min-width: 160px;
     gap: 10px;
-    padding: 10px 15px;
+    padding: 5px 15px;
   }
   .playToggle svg {
     width: auto;
