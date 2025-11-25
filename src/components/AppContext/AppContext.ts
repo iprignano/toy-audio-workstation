@@ -36,6 +36,14 @@ export type AppContextValue = Store<{
   setDrumSequenceIndex: Setter<number>;
   synthSequenceIndex: Accessor<number>;
   setSynthSequenceIndex: Setter<number>;
+  nextDrumSequenceIndex: Accessor<number | null>;
+  setNextDrumSequenceIndex: Setter<number | null>;
+  nextSynthSequenceIndex: Accessor<number | null>;
+  setNextSynthSequenceIndex: Setter<number | null>;
+  isDrumAutoSequenced: Accessor<boolean>;
+  setIsDrumAutoSequenced: Setter<boolean>;
+  isSynthAutoSequenced: Accessor<boolean>;
+  setIsSynthAutoSequenced: Setter<boolean>;
   drums: DrumsStore;
   setDrums: SetStoreFunction<DrumsStore>;
   keys: KeysStore;

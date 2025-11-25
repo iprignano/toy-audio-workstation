@@ -15,6 +15,10 @@ export default function AppContextProvider(props: {
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [drumSequenceIndex, setDrumSequenceIndex] = createSignal(0);
   const [synthSequenceIndex, setSynthSequenceIndex] = createSignal(0);
+  const [nextDrumSequenceIndex, setNextDrumSequenceIndex] = createSignal<number | null>(null);
+  const [nextSynthSequenceIndex, setNextSynthSequenceIndex] = createSignal<number | null>(null);
+  const [isDrumAutoSequenced, setIsDrumAutoSequenced] = createSignal(true);
+  const [isSynthAutoSequenced, setIsSynthAutoSequenced] = createSignal(true);
   const [currentStep, setCurrentStep] = createSignal(0);
   const [synthAttack, setSynthAttack] = createSignal(0.1);
   const [synthRelease, setSynthRelease] = createSignal(0.1);
@@ -62,6 +66,14 @@ export default function AppContextProvider(props: {
     setDrumSequenceIndex,
     synthSequenceIndex,
     setSynthSequenceIndex,
+    nextDrumSequenceIndex,
+    setNextDrumSequenceIndex,
+    nextSynthSequenceIndex,
+    setNextSynthSequenceIndex,
+    isDrumAutoSequenced,
+    setIsDrumAutoSequenced,
+    isSynthAutoSequenced,
+    setIsSynthAutoSequenced,
     drums,
     setDrums,
     keys,

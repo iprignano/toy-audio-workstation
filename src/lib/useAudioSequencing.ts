@@ -19,6 +19,25 @@ export const useAudioSequencing = () => {
     const interval = setInterval(() => {
       if (context.currentStep() >= LOOP_STEPS_LENGTH) {
         context.setCurrentStep(0);
+
+        // If the user queued a specific sequence next,
+        // switch to it.
+        // If the auto sequence control is on,
+        // switch to the next one in numerical order.
+        // Otherwise, just stay in the current sequence.
+        if (context.nextDrumSequenceIndex() !== null) {
+          context.setDrumSequenceIndex(context.nextDrumSequenceIndex() as number);
+          context.setNextDrumSequenceIndex(null);
+        } else if (context.isDrumAutoSequenced()) {
+          context.setDrumSequenceIndex((prev) => (prev === 3 ? 0 : prev + 1));
+        }
+
+        if (context.nextSynthSequenceIndex() !== null) {
+          context.setSynthSequenceIndex(context.nextSynthSequenceIndex() as number);
+          context.setNextSynthSequenceIndex(null);
+        } else if (context.isSynthAutoSequenced()) {
+          context.setSynthSequenceIndex((prev) => (prev === 3 ? 0 : prev + 1));
+        }
       }
 
       const time = getAudioContext().currentTime;
@@ -26,28 +45,21 @@ export const useAudioSequencing = () => {
       // Drums only play on 16th beats, so we
       // divide the 32nd-based current step by 2
       const drumStep = (context.currentStep() + 1) / 2;
+      const drumSequence = context.drumSequenceIndex();
 
-      if (
-        context.drums[context.drumSequenceIndex()].kick[drumStep] &&
-        context.activeInstruments.kick
-      ) {
+      if (context.drums[drumSequence].kick[drumStep] && context.activeInstruments.kick) {
         playKick(time, context.drumKit());
       }
-      if (
-        context.drums[context.drumSequenceIndex()].snare[drumStep] &&
-        context.activeInstruments.snare
-      ) {
+      if (context.drums[drumSequence].snare[drumStep] && context.activeInstruments.snare) {
         playSnare(time, context.drumKit());
       }
-      if (
-        context.drums[context.drumSequenceIndex()].hihats[drumStep] &&
-        context.activeInstruments.hihats
-      ) {
+      if (context.drums[drumSequence].hihats[drumStep] && context.activeInstruments.hihats) {
         playHihats(time, context.drumKit());
       }
 
-      if (context.keys[context.synthSequenceIndex()][context.currentStep()]?.length) {
-        context.keys[context.synthSequenceIndex()][context.currentStep()]?.forEach((note) => {
+      const synthSequence = context.synthSequenceIndex();
+      if (context.keys[synthSequence][context.currentStep()]?.length) {
+        context.keys[synthSequence][context.currentStep()]?.forEach((note) => {
           if (note.freq) {
             playNote({
               frequency: note.freq,
