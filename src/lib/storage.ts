@@ -11,6 +11,8 @@ export type SavedSong = {
   keys: KeysStore;
   keysAttack: number;
   keysRelease: number;
+  isDrumAutoSequenced: boolean;
+  isSynthAutoSequenced: boolean;
   createdAt: string;
 };
 type TawStorage = { songs: SavedSong[] };

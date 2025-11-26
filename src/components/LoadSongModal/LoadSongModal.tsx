@@ -10,7 +10,7 @@ import styles from './styles.module.css';
 const WINDOW_SIZE = 7;
 
 export default function LoadSongModal(props: { onClose(): void }) {
-  const context = useContext(AppContext);
+  const context = useContext(AppContext)!;
   const [page, setPage] = createSignal(0);
   const [activeTab, setActiveTab] = createSignal<'savedSongs' | 'loadFromString'>('savedSongs');
   const [hasError, setHasError] = createSignal(false);
@@ -33,13 +33,19 @@ export default function LoadSongModal(props: { onClose(): void }) {
   const handleSongLoading = () => {
     setHasError(false);
     try {
-      context?.setBpm(selectedSong()?.bpm as SavedSong['bpm']);
-      context?.setOscWave(selectedSong()?.waveType as SavedSong['waveType']);
-      context?.setDrumKit(selectedSong()?.drumKit as SavedSong['drumKit']);
-      context?.setDrums(selectedSong()?.drums as SavedSong['drums']);
-      context?.setKeys(selectedSong()?.keys as SavedSong['keys']);
-      context?.setSynthAttack(selectedSong()?.keysAttack as SavedSong['keysAttack']);
-      context?.setSynthRelease(selectedSong()?.keysRelease as SavedSong['keysRelease']);
+      context.setBpm(selectedSong()?.bpm as SavedSong['bpm']);
+      context.setOscWave(selectedSong()?.waveType as SavedSong['waveType']);
+      context.setDrumKit(selectedSong()?.drumKit as SavedSong['drumKit']);
+      context.setDrums(selectedSong()?.drums as SavedSong['drums']);
+      context.setKeys(selectedSong()?.keys as SavedSong['keys']);
+      context.setSynthAttack(selectedSong()?.keysAttack as SavedSong['keysAttack']);
+      context.setSynthRelease(selectedSong()?.keysRelease as SavedSong['keysRelease']);
+      context.setIsDrumAutoSequenced(
+        selectedSong()?.isDrumAutoSequenced as SavedSong['isDrumAutoSequenced'],
+      );
+      context.setIsSynthAutoSequenced(
+        selectedSong()?.isSynthAutoSequenced as SavedSong['isSynthAutoSequenced'],
+      );
       props.onClose();
     } catch (error) {
       setHasError(true);

@@ -41,6 +41,8 @@ export default function AppContextProvider(props: {
         keys: keys,
         keysAttack: synthAttack(),
         keysRelease: synthRelease(),
+        isDrumAutoSequenced: isDrumAutoSequenced(),
+        isSynthAutoSequenced: isSynthAutoSequenced(),
       }),
     );
   };
