@@ -17,7 +17,7 @@ export function Keys() {
           width="111"
           height="301"
           rx="10"
-        ></rect>
+        />
         <rect
           id="Rectangle"
           fill="currentColor"
@@ -26,7 +26,7 @@ export function Keys() {
           width="111"
           height="301"
           rx="10"
-        ></rect>
+        />
         <rect
           id="Rectangle"
           fill="currentColor"
@@ -35,9 +35,9 @@ export function Keys() {
           width="111"
           height="301"
           rx="10"
-        ></rect>
-        <rect id="Rectangle" fill="#171717" x="85" y="0" width="65" height="194" rx="8"></rect>
-        <rect id="Rectangle" fill="#171717" x="211" y="0" width="65" height="194" rx="8"></rect>
+        />
+        <rect id="Rectangle" fill="#171717" x="85" y="0" width="65" height="194" rx="8" />
+        <rect id="Rectangle" fill="#171717" x="211" y="0" width="65" height="194" rx="8" />
       </g>
     </svg>
   );

@@ -1,4 +1,4 @@
-import { useContext } from 'solid-js';
+import { useContext, For } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { SawtoothWave } from '../Icon/SawtoothWave';
 import { SineWave } from '../Icon/SineWave';
@@ -26,7 +26,7 @@ export default function SynthSettings() {
         <h3 class={styles.optionTitle}>wave type</h3>
         <fieldset>
           <div class={styles.waves}>
-            {waves.map((wave) => (
+            <For each={waves}>{(wave) => (
               <div
                 classList={{
                   [styles.radioContainer]: true,
@@ -44,7 +44,7 @@ export default function SynthSettings() {
                 />
                 <label for={wave}>{wave}</label>
               </div>
-            ))}
+            )}</For>
           </div>
         </fieldset>
       </div>

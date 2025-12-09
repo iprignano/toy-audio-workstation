@@ -21,7 +21,7 @@ export const useTimeMarker = ({
   const [markerTransitionDuration, setMarkerTransitionDuration] = createSignal(0);
 
   // The speed at which the time marker moves through a single cell
-  const markerTransitionInSeconds = 60 / context?.bpm()! / 4;
+  const markerTransitionInSeconds = 60 / context.bpm()! / 4;
   // Needed to avoid the marker animate back to step 0 when the loop wraps
   const transitionDurationInSeconds = context?.currentStep() === 0 ? 0 : markerTransitionInSeconds;
   setMarkerTransitionDuration(transitionDurationInSeconds);
@@ -40,7 +40,7 @@ export const useTimeMarker = ({
 
   const markerStyles = createMemo<MarkerStyles>(() => ({
     height: `${tableHeight()}px`,
-    transform: `translate3d(${tdSize() + context?.currentStep()! * tdSize()}px, 0, 0)`,
+    transform: `translate3d(${tdSize() + context.currentStep()! * tdSize()}px, 0, 0)`,
     'transition-duration': `${markerTransitionDuration()}s`,
   }));
 

@@ -47,7 +47,7 @@ export default function AppContextProvider(props: {
     );
   };
 
-  const [appStore, _] = createStore({
+  const [appStore] = createStore({
     bpm,
     setBpm,
     isPlaying,

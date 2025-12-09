@@ -8,16 +8,16 @@ export function Snare(props: { fill?: string }) {
       xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       <defs>
-        <rect id="path-1" x="0" y="0" width="456" height="100"></rect>
+        <rect id="path-1" x="0" y="0" width="456" height="100" />
       </defs>
       <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Artboard">
           <g id="Group" transform="translate(9.000000, 50.000000)">
             <g id="Oval" transform="translate(0.000000, 216.000000)">
               <mask id="mask-2" fill="white">
-                <use href="#path-1"></use>
+                <use href="#path-1" />
               </mask>
-              <g id="Mask"></g>
+              <g id="Mask" />
               <ellipse
                 stroke={props.fill || '#000'}
                 stroke-width="22"
@@ -26,7 +26,7 @@ export function Snare(props: { fill?: string }) {
                 cy="1.5"
                 rx="207"
                 ry="83.5"
-              ></ellipse>
+              />
             </g>
             <ellipse
               id="Oval"
@@ -36,7 +36,7 @@ export function Snare(props: { fill?: string }) {
               cy="89.5"
               rx="207"
               ry="83.5"
-            ></ellipse>
+            />
             <line
               x1="420"
               y1="92"
@@ -45,7 +45,7 @@ export function Snare(props: { fill?: string }) {
               id="Line"
               stroke={props.fill || '#000'}
               stroke-width="22"
-            ></line>
+            />
             <line
               x1="326.25"
               y1="163.75"
@@ -54,7 +54,7 @@ export function Snare(props: { fill?: string }) {
               id="Line"
               stroke={props.fill || '#000'}
               stroke-width="22"
-            ></line>
+            />
             <line
               x1="110.25"
               y1="166.75"
@@ -63,7 +63,7 @@ export function Snare(props: { fill?: string }) {
               id="Line"
               stroke={props.fill || '#000'}
               stroke-width="22"
-            ></line>
+            />
             <line
               x1="6.25"
               y1="91.75"
@@ -72,7 +72,7 @@ export function Snare(props: { fill?: string }) {
               id="Line"
               stroke={props.fill || '#000'}
               stroke-width="22"
-            ></line>
+            />
           </g>
           <line
             x1="407.5"
@@ -83,8 +83,8 @@ export function Snare(props: { fill?: string }) {
             stroke={props.fill || '#000'}
             stroke-width="22"
             stroke-linecap="square"
-          ></line>
-          <circle id="Oval" fill={props.fill || '#000'} cx="222" cy="137" r="14"></circle>
+          />
+          <circle id="Oval" fill={props.fill || '#000'} cx="222" cy="137" r="14" />
         </g>
       </g>
     </svg>

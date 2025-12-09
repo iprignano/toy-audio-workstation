@@ -1,6 +1,6 @@
-import type { SampleBufferTuple, SampledDrumKitName } from './useSamplesResource';
 import { hihats, kick, snare } from './toyDrumKit';
-import { type DrumKit } from '../components/AppContext/AppContext';
+import type { DrumKit } from '../components/AppContext/AppContext';
+import type { SampleBufferTuple, SampledDrumKitName } from './useSamplesResource';
 
 type SampleBuffers = Record<
   SampledDrumKitName,
@@ -117,7 +117,7 @@ const playHihats = (time: number, drumKit: DrumKit) => {
 // ================
 // Synth
 // ================
-let notesPlaying: Record<number, { osc: OscillatorNode; gain: GainNode }> = {};
+const notesPlaying: Record<number, { osc: OscillatorNode; gain: GainNode }> = {};
 const outputVolume = 0.4;
 
 const playNote = (params: {

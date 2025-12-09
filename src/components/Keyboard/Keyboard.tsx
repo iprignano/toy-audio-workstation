@@ -1,5 +1,5 @@
 import { difference, union } from 'es-toolkit';
-import { createEffect, createSignal, onCleanup, onMount, useContext } from 'solid-js';
+import { createEffect, createSignal, onCleanup, onMount, useContext, For } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
 import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../../lib/audio';
@@ -200,14 +200,16 @@ export default function Keyboard() {
           />
 
           <datalist id="wavesList">
-            {oscTypes.map(({ label }, index) => (
-              <option value={index} label={label}></option>
-            ))}
+            <For each={oscTypes}>
+              {({ label }, index) => (
+                <option value={index()} label={label} />
+              )}
+            </For>
           </datalist>
         </div>
       </div>
       <div class={styles.keys}>
-        {notes().map(({ note, freq }) => (
+        <For each={notes()}>{({ note, freq }) => (
           <button
             classList={{
               [styles.key]: true,
@@ -233,7 +235,7 @@ export default function Keyboard() {
               releaseNote(freq);
             }}
           />
-        ))}
+        )}</For>
       </div>
     </div>
   );

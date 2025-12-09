@@ -16,7 +16,7 @@ export function Kick(props: { fill?: string }) {
           cx="149"
           cy="149"
           r="138"
-        ></circle>
+        />
         <line
           x1="149"
           y1="161"
@@ -26,8 +26,8 @@ export function Kick(props: { fill?: string }) {
           stroke={props.fill || '#000'}
           stroke-width="23"
           stroke-linecap="square"
-        ></line>
-        <circle id="Oval" fill={props.fill || '#000'} cx="149.5" cy="161.5" r="38.5"></circle>
+        />
+        <circle id="Oval" fill={props.fill || '#000'} cx="149.5" cy="161.5" r="38.5" />
       </g>
     </svg>
   );

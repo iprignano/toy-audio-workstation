@@ -48,6 +48,7 @@ export default function LoadSongModal(props: { onClose(): void }) {
       );
       props.onClose();
     } catch (error) {
+      console.error(error);
       setHasError(true);
     }
   };

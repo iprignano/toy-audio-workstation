@@ -13,7 +13,7 @@ export default function ShareSongModal(props: { onClose(): void }) {
     const song: Omit<SavedSong, 'id'> = {
       name: 'shared tune',
       createdAt: new Date().toISOString(),
-      ...context?.getSong()!,
+      ...context!.getSong()!,
     };
     return btoa(JSON.stringify(song));
   });

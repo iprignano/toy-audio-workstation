@@ -1,4 +1,4 @@
-import { useContext } from 'solid-js';
+import { useContext, For } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import { AppContext } from '../AppContext/AppContext';
@@ -41,7 +41,7 @@ export default function DrumsSequencer() {
   return (
     <div class={`${styles.wrapper} monospace`}>
       <div />
-      {STEPS_ARRAY.map((step) => (
+      <For each={STEPS_ARRAY}>{(step) => (
         <div
           classList={{
             [styles.step]: true,
@@ -50,8 +50,8 @@ export default function DrumsSequencer() {
         >
           {step}
         </div>
-      ))}
-      {INSTRUMENTS.map((instrument) => (
+      )}</For>
+      <For each={INSTRUMENTS}>{(instrument) => (
         <>
           <div
             classList={{
@@ -63,7 +63,7 @@ export default function DrumsSequencer() {
               <Dynamic component={instrumentIcons[instrument]} fill={'white'} />
             </button>
           </div>
-          {STEPS_ARRAY.map((step) => (
+          <For each={STEPS_ARRAY}>{(step) => (
             <div
               classList={{
                 [styles.activeStep]: isHiglighted(
@@ -82,9 +82,9 @@ export default function DrumsSequencer() {
                 }}
               />
             </div>
-          ))}
+          )}</For>
         </>
-      ))}
+      )}</For>
     </div>
   );
 }

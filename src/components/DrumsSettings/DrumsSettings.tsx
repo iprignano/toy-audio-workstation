@@ -1,4 +1,4 @@
-import { useContext } from 'solid-js';
+import { useContext, For } from 'solid-js';
 import { AppContext, drumKits, type DrumKit } from '../AppContext/AppContext';
 import styles from './styles.module.css';
 
@@ -11,7 +11,7 @@ export default function DrumsSettings() {
         <h3 class={styles.optionTitle}>drum kit</h3>
         <fieldset>
           <div class={styles.kits}>
-            {drumKits.map((kit) => (
+            <For each={drumKits}>{(kit) => (
               <div
                 classList={{
                   [styles.radioContainer]: true,
@@ -29,7 +29,7 @@ export default function DrumsSettings() {
                 />
                 <label for={kit}>{kit}</label>
               </div>
-            ))}
+            )}</For>
           </div>
         </fieldset>
       </div>

@@ -34,7 +34,7 @@ export default function SynthSequencer() {
 
   return (
     <div class={styles.wrapper}>
-      <div class={styles.timeMarker} style={timeMarkerStyles()}></div>
+      <div class={styles.timeMarker} style={timeMarkerStyles()} />
       <table class={styles.noteTable} ref={tableRef}>
         <tbody>
           <Index each={noteRegistry}>
@@ -106,9 +106,8 @@ export default function SynthSequencer() {
                             [styles.resizing]: isChangingNoteLength(),
                           }}
                           style={{
-                            width: `calc(100% * ${
-                              isDragHoveredNote() ? draggedNote()?.length : noteInSlot()?.length
-                            })`,
+                            width: `calc(100% * ${isDragHoveredNote() ? draggedNote()?.length : noteInSlot()?.length
+                              })`,
                           }}
                         >
                           {note().note}

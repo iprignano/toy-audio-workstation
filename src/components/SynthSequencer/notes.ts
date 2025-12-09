@@ -18,7 +18,7 @@ export const noteRegistry = (() => {
   // Build the notes register, starting from the base
   // first octave and doubling the frequency of the notes
   // for each octave loop
-  let notes = [...firstOctave];
+  const notes = [...firstOctave];
   let previousOctave = firstOctave;
   for (let oct = 1; oct < 6; oct++) {
     previousOctave = previousOctave.map(({ octave, note, freq }) => ({

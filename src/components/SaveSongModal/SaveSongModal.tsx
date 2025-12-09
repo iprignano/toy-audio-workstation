@@ -1,5 +1,5 @@
 import { random } from 'es-toolkit';
-import { createEffect, createSignal, useContext } from 'solid-js';
+import { createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
@@ -37,9 +37,9 @@ export default function SaveSongModal(props: { onClose(): void }) {
 
     if (hasSaved()) return;
 
-    let song = {
+    const song = {
       name: songName(),
-      ...context?.getSong()!,
+      ...context!.getSong()!,
     };
 
     const success = saveSong(song);
