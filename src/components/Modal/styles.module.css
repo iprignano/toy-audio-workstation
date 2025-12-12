@@ -2,14 +2,17 @@
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 20;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .modal {
   position: relative;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  margin-left: 50%;
+  transform: translate3d(-50%, 0, 0);
   width: 100%;
   max-width: 560px;
   background-color: #2e2e2e;
@@ -17,6 +20,10 @@
   border-radius: 8px;
   overflow: hidden;
   z-index: 21;
+}
+
+.modal.large {
+  max-width: 700px;
 }
 
 .closeButton {

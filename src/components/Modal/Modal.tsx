@@ -4,7 +4,11 @@ import { Close } from '../Icon/Close';
 import styles from './styles.module.css';
 import type { JSXElement } from 'solid-js';
 
-export default function Modal(props: { onClose(): void; children: JSXElement }) {
+export default function Modal(props: {
+  onClose(): void;
+  children: JSXElement;
+  variant?: 'regular' | 'large';
+}) {
   const context = useContext(AppContext);
 
   onMount(() => {
@@ -20,9 +24,11 @@ export default function Modal(props: { onClose(): void; children: JSXElement }) 
     }
   };
 
+  const variant = () => styles[props.variant ?? 'regular'];
+
   return (
     <div id="overlay" class={styles.overlay} onClick={handleOverlayClick}>
-      <div class={styles.modal}>
+      <div classList={{ [styles.modal]: true, [variant()]: true }}>
         <button class={styles.closeButton} onClick={() => props.onClose()}>
           <Close />
         </button>
