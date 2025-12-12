@@ -103,6 +103,9 @@ export default function HelpModal(props: { onClose(): void }) {
             </p>
           </li>
           <li>
+            <p>Double click the "stop" button to reset the sequence to its initial state;</p>
+          </li>
+          <li>
             <p>Share your loops with your friends and import theirs!</p>
           </li>
         </ul>
