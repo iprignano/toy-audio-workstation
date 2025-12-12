@@ -1,0 +1,131 @@
+.wrapper {
+  padding: 40px;
+}
+
+.wrapper hr {
+  margin: 30px 0;
+  height: 1px;
+  border: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 1px rgba(31, 31, 31, 0.7);
+}
+
+.wrapper h2 {
+  margin-bottom: 20px;
+}
+
+.wrapper a {
+  color: white;
+  text-decoration: none;
+}
+
+.wrapper a:hover {
+  text-decoration: underline;
+}
+
+.videoWrapper {
+  position: relative;
+}
+
+.arrows {
+  position: absolute;
+  inset: 0 -35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrows button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 900;
+  font-family: var(--mono-font-family);
+  background-color: #3a3a3a;
+  color: white;
+  transition: all 120ms cubic-bezier(0.22, 0.73, 0.27, 1);
+}
+
+.arrows button:disabled {
+  background-color: #303030;
+  color: #3d3d3d;
+  pointer-events: none;
+}
+
+.arrows button:hover:not(:disabled) {
+  background-color: var(--primary-accent-color);
+}
+
+.arrows button:first-child:hover:not(:disabled) {
+  transform: translateX(-2px);
+}
+
+.arrows button:last-child:hover:not(:disabled) {
+  transform: translateX(2px);
+}
+
+.example {
+  margin-bottom: 20px;
+  position: relative;
+  display: none;
+}
+
+.example.isActive {
+  display: block;
+}
+
+.video {
+  overflow: hidden;
+  position: relative;
+  border-radius: 15px;
+}
+
+.video::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 10px 5px #1b1b1b;
+}
+
+.text {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.paginationButton {
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: transparent;
+  transition: background-color 100ms ease;
+}
+
+.paginationButton.isActive {
+  background-color: var(--primary-accent-color);
+}
+
+.tips li p {
+  display: flex;
+  flex-direction: row;
+}
+
+.credits {
+  padding: 20px 10px;
+  text-align: center;
+  font-family: var(--mono-font-family);
+  font-size: 14px;
+}
