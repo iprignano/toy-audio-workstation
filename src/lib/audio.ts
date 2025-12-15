@@ -122,12 +122,13 @@ const outputVolume = 0.4;
 
 const playNote = (params: {
   frequency: number;
+  scheduledTime?: number;
   wave?: OscillatorType;
   duration?: number;
   attack?: number;
   release?: number;
 }) => {
-  const { frequency, wave, duration, attack = 0.2, release = 0.1 } = params;
+  const { scheduledTime, frequency, wave, duration, attack = 0.2, release = 0.1 } = params;
   if (notesPlaying[frequency]) return;
 
   const audioCtx = getAudioContext();
@@ -141,10 +142,11 @@ const playNote = (params: {
 
   osc.frequency.value = frequency;
   osc.start();
+  const time = scheduledTime || audioCtx.currentTime;
 
   if (duration) {
-    gain.gain.setTargetAtTime(outputVolume, audioCtx.currentTime, attack);
-    gain.gain.setTargetAtTime(0, audioCtx.currentTime + duration, release);
+    gain.gain.setTargetAtTime(outputVolume, time, attack);
+    gain.gain.setTargetAtTime(0, time + duration, release);
 
     setTimeout(() => {
       // Disconnect nodes for GC
@@ -152,7 +154,7 @@ const playNote = (params: {
       gain.disconnect();
     }, duration * 1000 + release * 6000);
   } else {
-    gain.gain.setTargetAtTime(outputVolume, audioCtx.currentTime, attack);
+    gain.gain.setTargetAtTime(outputVolume, time, attack);
     notesPlaying[frequency] = { osc, gain };
   }
 };
