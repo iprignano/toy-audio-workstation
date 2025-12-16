@@ -20,13 +20,11 @@ export const useAudioSequencing = () => {
 
     if (!context.isPlaying()) {
       clock.postMessage({ type: 'stop' });
-      audioCtx.suspend();
       return;
     }
 
     clock.postMessage({ type: 'setInterval', interval: schedulingInterval });
     clock.postMessage({ type: 'start' });
-    audioCtx.resume();
 
     // The scheduler clock is ticking in a web worker off the main thread.
     // Each tick will trigger the execution of the callback below which will:
