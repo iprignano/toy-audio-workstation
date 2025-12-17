@@ -35,56 +35,66 @@ export default function DrumsSequencer() {
   ) => {
     if (!isPlaying || typeof currentStep === 'undefined') return false;
     const eigthStep = Math.floor(currentStep / 2);
-    return isPlaying && eigthStep === step;
+    return step === eigthStep;
   };
 
   return (
     <div class={`${styles.wrapper} monospace`}>
       <div />
-      <For each={STEPS_ARRAY}>{(step) => (
-        <div
-          classList={{
-            [styles.step]: true,
-            [styles.activeStep]: isHiglighted(context.isPlaying(), step, context.currentStep()),
-          }}
-        >
-          {step}
-        </div>
-      )}</For>
-      <For each={INSTRUMENTS}>{(instrument) => (
-        <>
+      <For each={STEPS_ARRAY}>
+        {(step) => (
           <div
             classList={{
-              [styles.instrument]: true,
-              [styles.active]: context?.activeInstruments[instrument],
+              [styles.step]: true,
+              [styles.activeStep]: isHiglighted(
+                context.isPlaying(),
+                step,
+                context.currentStep() + 1,
+              ),
             }}
           >
-            <button onClick={() => context.toggleInstrument(instrument, (active) => !active)}>
-              <Dynamic component={instrumentIcons[instrument]} fill={'white'} />
-            </button>
+            {step}
           </div>
-          <For each={STEPS_ARRAY}>{(step) => (
+        )}
+      </For>
+      <For each={INSTRUMENTS}>
+        {(instrument) => (
+          <>
             <div
               classList={{
-                [styles.activeStep]: isHiglighted(
-                  context?.isPlaying(),
-                  step,
-                  context?.currentStep(),
-                ),
+                [styles.instrument]: true,
+                [styles.active]: context?.activeInstruments[instrument],
               }}
             >
-              <input
-                type="checkbox"
-                checked={context.drums[context.drumSequenceIndex()][instrument][step]}
-                onChange={(evt) => {
-                  evt.preventDefault();
-                  onStepToggle(instrument, step + 1, evt.target.checked);
-                }}
-              />
+              <button onClick={() => context.toggleInstrument(instrument, (active) => !active)}>
+                <Dynamic component={instrumentIcons[instrument]} fill={'white'} />
+              </button>
             </div>
-          )}</For>
-        </>
-      )}</For>
+            <For each={STEPS_ARRAY}>
+              {(step) => (
+                <div
+                  classList={{
+                    [styles.activeStep]: isHiglighted(
+                      context?.isPlaying(),
+                      step,
+                      context?.currentStep() + 1,
+                    ),
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={context.drums[context.drumSequenceIndex()][instrument][step]}
+                    onChange={(evt) => {
+                      evt.preventDefault();
+                      onStepToggle(instrument, step + 1, evt.target.checked);
+                    }}
+                  />
+                </div>
+              )}
+            </For>
+          </>
+        )}
+      </For>
     </div>
   );
 }
